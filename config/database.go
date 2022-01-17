@@ -2,12 +2,12 @@ package config
 
 import (
 	"fmt"
-	"google-tasks-clone/helper"
-	"os"
-
 	"github.com/joho/godotenv"
+	"google-tasks-clone/helper"
+	"google-tasks-clone/model"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"os"
 )
 
 func SetupDatabaseConnection() *gorm.DB {
@@ -29,9 +29,17 @@ func SetupDatabaseConnection() *gorm.DB {
 		database,
 	)
 
-	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
-	helper.CustomPanic(err, "Failed to create connection to database")
-	// db.AutoMigrate()
+	db, errOpen := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	helper.CustomPanic(errOpen, "Failed to create connection to database")
+
+	errMigrate := db.AutoMigrate(
+		&model.User{},
+		&model.List{},
+		&model.Task{},
+		&model.Subtask{},
+	)
+	helper.DefaultPanic(errMigrate)
+
 	return db
 }
 
