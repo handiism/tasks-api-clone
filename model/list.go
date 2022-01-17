@@ -7,10 +7,10 @@ import (
 
 type List struct {
 	ID        uint
-	UserID    uint      `gorm:"not null"`
-	Title     string    `gorm:"type:varchar(50);not null"`
-	CreatedAt time.Time `gorm:"autoCreateTime;default:current_timestamp;not null"`
-	UpdatedAt sql.NullTime
+	UserID    uint         `gorm:"not null"`
+	Title     string       `gorm:"type:varchar(50);not null"`
+	CreatedAt time.Time    `gorm:"not null"`
+	UpdatedAt sql.NullTime `gorm:"default:null"`
 	Tasks     []Task
 }
 
