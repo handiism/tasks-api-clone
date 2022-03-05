@@ -1,22 +1,14 @@
 package main
 
 import (
-	"google-tasks-clone/config"
-	"google-tasks-clone/helper"
-	"google-tasks-clone/model"
+	"github.com/gin-gonic/gin"
+	"tasks/config"
 )
 
 func main() {
+	db := config.OpenDBConn()
+	defer config.CloseDBConn(db)
 
-	db := config.SetupDatabaseConnection()
-	defer config.CloseDatabaseConnection(db)
-
-	err := db.AutoMigrate(
-		&model.User{},
-		&model.List{},
-		&model.Task{},
-		&model.Subtask{},
-	)
-
-	helper.DefaultPanic(err)
+	r := gin.Default()
+	r.Run(":8080")
 }
