@@ -2,7 +2,6 @@ package test
 
 import (
 	"database/sql"
-	"fmt"
 	"math/rand"
 	"reflect"
 	"tasks/model"
@@ -13,48 +12,7 @@ import (
 	"github.com/bxcodec/faker/v3"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
-	"gorm.io/driver/postgres"
-	"gorm.io/gorm"
-	"gorm.io/gorm/logger"
 )
-
-func openDBConn() *gorm.DB {
-	user := "handiism"
-	password := "mrongoz"
-	hostname := "127.0.0.1"
-	port := "5432"
-
-	database := "tasks"
-
-	dsn := fmt.Sprintf(
-		"host=%s user=%s password=%s port=%s dbname=%s sslmode=disable TimeZone=Asia/Shanghai",
-		hostname, user, password, port, database+"_test",
-	)
-
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{
-		Logger: logger.Default.LogMode(logger.Silent),
-	})
-
-	if err != nil {
-		panic(err)
-	}
-
-	if err := db.AutoMigrate(
-		&model.User{}, &model.List{}, &model.Task{}, &model.Subtask{},
-	); err != nil {
-		panic(err)
-	}
-
-	return db
-}
-
-func closeDBConn(db *gorm.DB) {
-	conn, err := db.DB()
-	if err != nil {
-		panic(err)
-	}
-	conn.Close()
-}
 
 var randUUID []uuid.UUID = []uuid.UUID{
 	uuid.New(), uuid.New(), uuid.New(), uuid.New(), uuid.New(),
@@ -66,6 +24,12 @@ var randUUID []uuid.UUID = []uuid.UUID{
 func TestFillDB(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
+
+	if err := db.AutoMigrate(
+		&model.User{}, &model.List{}, &model.Task{}, &model.Subtask{},
+	); err != nil {
+		panic(err)
+	}
 
 	err := faker.AddProvider("ref", func(v reflect.Value) (interface{}, error) {
 		return uint(1 + rand.Intn(20)), nil
@@ -103,7 +67,6 @@ func TestFillDB(t *testing.T) {
 
 		assert.Nil(t, err)
 
-		list.ID = uint(i + 1)
 		list.UserID = randUUID[rand.Intn(20)]
 		list.CreatedAt = time.Now()
 
