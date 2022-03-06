@@ -2,6 +2,7 @@ package test
 
 import (
 	"database/sql"
+	"tasks/helper"
 	"tasks/model"
 	"tasks/repo"
 	"testing"
@@ -12,8 +13,8 @@ import (
 )
 
 var existingUser model.User
-var existingUUID string = "919e834b-1e72-4a59-a429-9e1aaf56245e"
-var existingEmail string = "XutfjYv@XHGcFbH.org"
+var existingUUID uuid.UUID = helper.ExistingUUID()
+var existingEmail string = helper.ExistingEmail()
 
 func TestRepoUserCreateSuccess(t *testing.T) {
 	db := openDBConn()
@@ -167,12 +168,8 @@ func TestRepoUserDetailSuccess(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
-	uuid, err := uuid.Parse(existingUUID)
-
-	assert.Nil(t, err)
-
 	user, err := repo.NewUser(db).Detail(model.User{
-		ID: uuid,
+		ID: existingUUID,
 	})
 
 	assert.Nil(t, err)
