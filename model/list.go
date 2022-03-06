@@ -8,7 +8,7 @@ import (
 )
 
 type List struct {
-	ID        uint         `json:"id"`
+	ID        uint         `gorm:"type:SERIAL;->" json:"id" faker:"-"`
 	UserID    uuid.UUID    `gorm:"type:uuid;not null" json:"user_id" faker:"-"`
 	Title     string       `gorm:"size:255;not null" json:"title" faker:"word"`
 	CreatedAt time.Time    `gorm:"not null" json:"created_at" faker:"-"`
