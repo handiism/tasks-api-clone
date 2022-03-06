@@ -1,0 +1,12 @@
+openapi: "3.0.2"
+info:
+  title: Tasks API Clone
+  version: "1.0"
+servers:
+  - url: http://localhost:8080/api/
+paths:
+  /test:
+    get:
+      responses:
+        "200":
+          description: OK
