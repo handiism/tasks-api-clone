@@ -3,17 +3,15 @@ package config
 import (
 	"fmt"
 	"os"
+	"tasks/helper"
 	"tasks/model"
 
-	"github.com/joho/godotenv"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
 func OpenDBConn() *gorm.DB {
-	if err := godotenv.Load(".env"); err != nil {
-		panic(err)
-	}
+	helper.GetEnv()
 
 	user := os.Getenv("DB_USER")
 	password := os.Getenv("DB_PASSWORD")
