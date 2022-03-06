@@ -82,8 +82,8 @@ func (u *user) Verify(email, password string) (model.User, error) {
 }
 
 func (u *user) Detail(user model.User) (model.User, error) {
-	if err := u.db.Preload("list").Preload("task").Preload("subtask").
-		Where(model.User{ID: user.ID}).First(&user).Error; err != nil {
+	if err := u.db.Where(model.User{ID: user.ID}).Preload("Lists.Tasks.Subtasks").
+		First(&user).Error; err != nil {
 		return model.User{}, err
 	}
 
@@ -93,8 +93,8 @@ func (u *user) Detail(user model.User) (model.User, error) {
 func (u *user) DetailUsingEmail(email string) (model.User, error) {
 	var user model.User
 
-	if err := u.db.Joins("list").Joins("task").Joins("subtask").
-		Where(model.User{Email: email}).First(&user).Error; err != nil {
+	if err := u.db.Where(model.User{Email: email}).Preload("Lists.Tasks.Subtasks").
+		First(&user).Error; err != nil {
 		return model.User{}, err
 	}
 
