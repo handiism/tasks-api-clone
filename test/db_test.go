@@ -56,12 +56,11 @@ func closeDBConn(db *gorm.DB) {
 	conn.Close()
 }
 
-var randUUID []string = []string{
-	uuid.NewString(), uuid.NewString(), uuid.NewString(), uuid.NewString(),
-	uuid.NewString(), uuid.NewString(), uuid.NewString(), uuid.NewString(),
-	uuid.NewString(), uuid.NewString(), uuid.NewString(), uuid.NewString(),
-	uuid.NewString(), uuid.NewString(), uuid.NewString(), uuid.NewString(),
-	uuid.NewString(), uuid.NewString(), uuid.NewString(), uuid.NewString(),
+var randUUID []uuid.UUID = []uuid.UUID{
+	uuid.New(), uuid.New(), uuid.New(), uuid.New(), uuid.New(),
+	uuid.New(), uuid.New(), uuid.New(), uuid.New(), uuid.New(),
+	uuid.New(), uuid.New(), uuid.New(), uuid.New(), uuid.New(),
+	uuid.New(), uuid.New(), uuid.New(), uuid.New(), uuid.New(),
 }
 
 func TestFillDB(t *testing.T) {
