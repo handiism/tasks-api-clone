@@ -32,7 +32,7 @@ func (l *list) Create(list model.List) (model.List, error) {
 func (l *list) Find(id uint) (model.List, error) {
 	var list model.List
 
-	if err := l.db.Where(model.List{ID: id}).First(list).Error; err != nil {
+	if err := l.db.Where(model.List{ID: id}).First(&list).Error; err != nil {
 		return model.List{}, err
 	}
 
@@ -40,6 +40,7 @@ func (l *list) Find(id uint) (model.List, error) {
 }
 
 func (l *list) Update(list model.List) (model.List, error) {
+
 	if err := l.db.Save(&list).Error; err != nil {
 		return model.List{}, err
 	}
@@ -48,7 +49,7 @@ func (l *list) Update(list model.List) (model.List, error) {
 }
 
 func (l *list) Delete(list model.List) error {
-	if err := l.db.Delete(list).Error; err != nil {
+	if err := l.db.Delete(&list).Error; err != nil {
 		return err
 	}
 
