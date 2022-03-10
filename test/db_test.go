@@ -92,7 +92,7 @@ func TestFaker(t *testing.T) {
 		}
 	})
 
-	t.Run("Tasks", func(t *testing.T) {
+	t.Run("Task", func(t *testing.T) {
 		for i := 0; i < 20; i++ {
 			var task model.Task
 
@@ -100,7 +100,6 @@ func TestFaker(t *testing.T) {
 				panic(err)
 			}
 
-			task.ID = uint(i + 1)
 			task.CreatedAt = time.Now()
 
 			sentence, err := faker.GetLorem().Sentence(reflect.Value{})
@@ -148,7 +147,6 @@ func TestFaker(t *testing.T) {
 
 			require.Nil(t, err)
 
-			subtask.ID = uint(i + 1)
 			subtask.CreatedAt = time.Now()
 
 			if rand.Intn(4) == i%4 {
