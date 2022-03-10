@@ -1,7 +1,6 @@
 package test
 
 import (
-	"database/sql"
 	"tasks/helper"
 	"tasks/model"
 	"tasks/repo"
@@ -9,12 +8,14 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
-var existingUser model.User
-var existingUUID uuid.UUID = helper.ExistingUUID()
-var existingEmail string = helper.ExistingEmail()
+var (
+	existingUser  model.User
+	existingUUID  uuid.UUID = helper.ExistingUserUUID()
+	existingEmail string    = helper.ExistingUserEmail()
+)
 
 func TestRepoUserCreateSuccess(t *testing.T) {
 	db := openDBConn()
@@ -28,8 +29,8 @@ func TestRepoUserCreateSuccess(t *testing.T) {
 		Password: "p4ssw*rd",
 	})
 
-	assert.Nil(t, err)
-	assert.NotEmpty(t, user)
+	require.Nil(t, err)
+	require.NotEmpty(t, user)
 
 	existingUser = user
 }
@@ -41,17 +42,18 @@ func TestRepoUserCreateFailed(t *testing.T) {
 	repo := repo.NewUser(db)
 
 	user, err := repo.Create(model.User{
-		ID:        [16]byte{},
+		ID:        existingUUID,
 		Name:      "",
 		Email:     existingEmail,
 		Password:  "",
 		CreatedAt: time.Time{},
-		UpdatedAt: sql.NullTime{},
+		UpdatedAt: time.Time{},
 		Token:     "",
+		Lists:     []model.List{},
 	})
 
-	assert.NotNil(t, err)
-	assert.Empty(t, user)
+	require.NotNil(t, err)
+	require.Empty(t, user)
 }
 
 func TestRepoUserFindByEmailSuccess(t *testing.T) {
@@ -62,8 +64,8 @@ func TestRepoUserFindByEmailSuccess(t *testing.T) {
 
 	user, err := repo.FindByEmail(existingUser.Email)
 
-	assert.Nil(t, err)
-	assert.NotEmpty(t, user)
+	require.Nil(t, err)
+	require.NotEmpty(t, user)
 }
 
 func TestRepoUserFindByEmailFailed(t *testing.T) {
@@ -71,11 +73,11 @@ func TestRepoUserFindByEmailFailed(t *testing.T) {
 	defer closeDBConn(db)
 
 	user, err := repo.NewUser(db).FindByEmail(
-		existingUser.Email + "false",
+		existingUser.Email + "adder",
 	)
 
-	assert.NotNil(t, err)
-	assert.Empty(t, user)
+	require.NotNil(t, err)
+	require.Empty(t, user)
 }
 
 func TestRepoUserIsEmailAvailabe(t *testing.T) {
@@ -83,10 +85,10 @@ func TestRepoUserIsEmailAvailabe(t *testing.T) {
 	defer closeDBConn(db)
 
 	ok := repo.NewUser(db).IsEmailAvailable(
-		existingUser.Email + "false",
+		existingUser.Email + "adder",
 	)
 
-	assert.True(t, ok)
+	require.True(t, ok)
 }
 
 func TestRepoUserIsEmailNotAvailabe(t *testing.T) {
@@ -95,26 +97,20 @@ func TestRepoUserIsEmailNotAvailabe(t *testing.T) {
 
 	ok := repo.NewUser(db).IsEmailAvailable(existingUser.Email)
 
-	assert.False(t, ok)
+	require.False(t, ok)
 }
 func TestRepoUserUpdateSuccess(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
-	user, err := repo.NewUser(db).Update(model.User{
-		ID:        existingUser.ID,
-		Name:      "GANTI" + existingUser.Name,
-		Email:     "GANTI" + existingUser.Email,
-		Password:  "GANTI" + existingUser.Password,
-		CreatedAt: existingUser.CreatedAt,
-		UpdatedAt: sql.NullTime{
-			Time:  time.Now(),
-			Valid: true,
-		},
-	})
+	existingUser.Name = "change"
+	existingUser.Email = "change"
+	existingUser.Password = "change"
 
-	assert.Nil(t, err)
-	assert.NotEmpty(t, user)
+	user, err := repo.NewUser(db).Update(existingUser)
+
+	require.Nil(t, err)
+	require.NotEmpty(t, user)
 
 	existingUser = user
 }
@@ -129,13 +125,13 @@ func TestRepoUserUpdateFailed(t *testing.T) {
 		Email:     existingEmail,
 		Password:  "",
 		CreatedAt: time.Time{},
-		UpdatedAt: sql.NullTime{},
+		UpdatedAt: time.Time{},
 		Token:     "",
 		Lists:     []model.List{},
 	})
 
-	assert.NotNil(t, err)
-	assert.Empty(t, user)
+	require.NotNil(t, err)
+	require.Empty(t, user)
 }
 
 func TestRepoUserVerifySuccess(t *testing.T) {
@@ -147,8 +143,8 @@ func TestRepoUserVerifySuccess(t *testing.T) {
 		existingUser.Password,
 	)
 
-	assert.Nil(t, err)
-	assert.NotEmpty(t, user)
+	require.Nil(t, err)
+	require.NotEmpty(t, user)
 }
 
 func TestRepoUserVerifyFailed(t *testing.T) {
@@ -157,11 +153,11 @@ func TestRepoUserVerifyFailed(t *testing.T) {
 
 	user, err := repo.NewUser(db).Verify(
 		existingUser.Email,
-		existingUser.Password+"false",
+		existingUser.Password+"adder",
 	)
 
-	assert.NotNil(t, err)
-	assert.Empty(t, user)
+	require.NotNil(t, err)
+	require.Empty(t, user)
 }
 
 func TestRepoUserDetailSuccess(t *testing.T) {
@@ -172,8 +168,8 @@ func TestRepoUserDetailSuccess(t *testing.T) {
 		ID: existingUUID,
 	})
 
-	assert.Nil(t, err)
-	assert.NotEmpty(t, user)
+	require.Nil(t, err)
+	require.NotEmpty(t, user)
 }
 
 func TestRepoUserDetailFailed(t *testing.T) {
@@ -186,13 +182,13 @@ func TestRepoUserDetailFailed(t *testing.T) {
 		Email:     "",
 		Password:  "",
 		CreatedAt: time.Time{},
-		UpdatedAt: sql.NullTime{},
+		UpdatedAt: time.Time{},
 		Token:     "",
 		Lists:     []model.List{},
 	})
 
-	assert.NotNil(t, err)
-	assert.Empty(t, user)
+	require.NotNil(t, err)
+	require.Empty(t, user)
 }
 
 func TestRepoUserDetailUsingEmailSuccess(t *testing.T) {
@@ -201,18 +197,18 @@ func TestRepoUserDetailUsingEmailSuccess(t *testing.T) {
 
 	user, err := repo.NewUser(db).DetailUsingEmail(existingEmail)
 
-	assert.Nil(t, err)
-	assert.NotEmpty(t, user)
+	require.Nil(t, err)
+	require.NotEmpty(t, user)
 }
 
 func TestRepoUserDetailUsingEmailFailed(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
-	user, err := repo.NewUser(db).DetailUsingEmail(existingEmail + "false")
+	user, err := repo.NewUser(db).DetailUsingEmail(existingEmail + "adder")
 
-	assert.NotNil(t, err)
-	assert.Empty(t, user)
+	require.NotNil(t, err)
+	require.Empty(t, user)
 }
 
 func TestRepoUserDeleteSuccess(t *testing.T) {
@@ -221,7 +217,7 @@ func TestRepoUserDeleteSuccess(t *testing.T) {
 
 	err := repo.NewUser(db).Delete(existingUser)
 
-	assert.Nil(t, err)
+	require.Nil(t, err)
 }
 
 func TestRepoUserDeleteFailed(t *testing.T) {
@@ -234,10 +230,10 @@ func TestRepoUserDeleteFailed(t *testing.T) {
 		Email:     "",
 		Password:  "",
 		CreatedAt: time.Time{},
-		UpdatedAt: sql.NullTime{},
+		UpdatedAt: time.Time{},
 		Token:     "",
 		Lists:     []model.List{},
 	})
 
-	assert.NotNil(t, err)
+	require.NotNil(t, err)
 }
