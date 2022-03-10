@@ -12,9 +12,9 @@ type Task struct {
 	Detail    sql.NullString `gorm:"size:255" json:"detail" faker:"-"`
 	DueDate   sql.NullTime   `gorm:"default:null" json:"due_date" faker:"-"`
 	IsDone    bool           `gorm:"default:false;not null" json:"is_done" faker:"-"`
-	CreatedAt time.Time      `gorm:"not null" json:"created_at" faker:"-"`
-	UpdatedAt sql.NullTime   `gorm:"default:null" json:"updated_at" faker:"-"`
-	Subtasks  []Subtask      `gorm:"foreignKey:TaskID;references:ID" json:"subtask" faker:"-"`
+	CreatedAt time.Time      `gorm:"autoCreateTime" json:"created_at" faker:"-"`
+	UpdatedAt time.Time      `gorm:"autoUpdateTime" json:"updated_at" faker:"-"`
+	Subtasks  []Subtask      `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL" json:"subtask" faker:"-"`
 }
 
 func (Task) TableName() string {
