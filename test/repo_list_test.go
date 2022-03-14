@@ -17,7 +17,7 @@ func TestRepoListCreateSuccess(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
-	createdList, err := repo.NewList(db).Create(model.List{
+	createdList, err := repo.NewListRepo(db).Create(model.List{
 		UserID: existingUUID,
 		Title:  "New List",
 	})
@@ -32,7 +32,7 @@ func TestRepoListCreateFailed(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
-	list, err := repo.NewList(db).Create(model.List{
+	list, err := repo.NewListRepo(db).Create(model.List{
 		UserID: uuid.New(),
 		Title:  "New Failed List",
 	})
@@ -45,7 +45,7 @@ func TestRepoListFindSuccess(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
-	list, err := repo.NewList(db).Find(uint(1 + rand.Intn(20)))
+	list, err := repo.NewListRepo(db).Find(uint(1 + rand.Intn(20)))
 
 	require.Nil(t, err)
 	require.NotEmpty(t, list)
@@ -55,7 +55,7 @@ func TestRepoListFindFailed(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
-	list, err := repo.NewList(db).Find(180)
+	list, err := repo.NewListRepo(db).Find(180)
 
 	require.NotNil(t, err)
 	require.Empty(t, list)
@@ -67,7 +67,7 @@ func TestRepoListUpdateSuccess(t *testing.T) {
 
 	list.Title = "change"
 
-	list, err := repo.NewList(db).Update(list)
+	list, err := repo.NewListRepo(db).Update(list)
 
 	require.Nil(t, err)
 	require.NotEmpty(t, list)
@@ -76,7 +76,7 @@ func TestRepoListUpdateFailed(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
-	list, err := repo.NewList(db).Update(model.List{
+	list, err := repo.NewListRepo(db).Update(model.List{
 		ID:        0,
 		UserID:    uuid.UUID{},
 		Title:     "",
@@ -93,7 +93,7 @@ func TestRepoListDeleteSuccess(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
-	err := repo.NewList(db).Delete(list)
+	err := repo.NewListRepo(db).Delete(list)
 
 	require.Nil(t, err)
 }
@@ -102,7 +102,7 @@ func TestRepoListDeleteFailed(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
-	err := repo.NewList(db).Delete(model.List{
+	err := repo.NewListRepo(db).Delete(model.List{
 		ID:        0,
 		UserID:    [16]byte{},
 		Title:     "",

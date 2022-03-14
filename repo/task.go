@@ -6,22 +6,22 @@ import (
 	"gorm.io/gorm"
 )
 
-type Task interface {
+type TaskRepo interface {
 	Create(model.Task) (model.Task, error)
 	Find(id uint) (model.Task, error)
 	Update(model.Task) (model.Task, error)
 	Delete(model.Task) error
 }
 
-type task struct {
+type taskRepo struct {
 	db *gorm.DB
 }
 
-func NewTask(db *gorm.DB) Task {
-	return &task{db}
+func NewTaskRepo(db *gorm.DB) TaskRepo {
+	return &taskRepo{db}
 }
 
-func (t *task) Create(task model.Task) (model.Task, error) {
+func (t *taskRepo) Create(task model.Task) (model.Task, error) {
 	if err := t.db.Create(&task).Error; err != nil {
 		return model.Task{}, err
 	}
@@ -29,7 +29,7 @@ func (t *task) Create(task model.Task) (model.Task, error) {
 	return task, nil
 }
 
-func (t *task) Find(id uint) (model.Task, error) {
+func (t *taskRepo) Find(id uint) (model.Task, error) {
 	var task model.Task
 
 	if err := t.db.Where(model.Task{ID: id}).First(&task).Error; err != nil {
@@ -39,7 +39,7 @@ func (t *task) Find(id uint) (model.Task, error) {
 	return task, nil
 }
 
-func (t *task) Update(task model.Task) (model.Task, error) {
+func (t *taskRepo) Update(task model.Task) (model.Task, error) {
 	if err := t.db.Save(&task).Error; err != nil {
 		return model.Task{}, err
 	}
@@ -47,7 +47,7 @@ func (t *task) Update(task model.Task) (model.Task, error) {
 	return task, nil
 }
 
-func (t *task) Delete(task model.Task) error {
+func (t *taskRepo) Delete(task model.Task) error {
 	if err := t.db.Delete(&task).Error; err != nil {
 		return err
 	}

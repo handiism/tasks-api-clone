@@ -55,7 +55,7 @@ func TestFaker(t *testing.T) {
 				user.UpdatedAt = time.Now()
 			}
 
-			repo := repo.NewUser(db)
+			repo := repo.NewUserRepo(db)
 
 			user, err = repo.Create(user)
 
@@ -79,7 +79,7 @@ func TestFaker(t *testing.T) {
 				list.UpdatedAt = time.Now()
 			}
 
-			repo := repo.NewList(db)
+			repo := repo.NewListRepo(db)
 
 			list, err = repo.Create(list)
 
@@ -130,7 +130,7 @@ func TestFaker(t *testing.T) {
 				task.IsDone = false
 			}
 
-			repo := repo.NewTask(db)
+			repo := repo.NewTaskRepo(db)
 
 			task, err = repo.Create(task)
 
@@ -156,7 +156,7 @@ func TestFaker(t *testing.T) {
 				subtask.IsDone = false
 			}
 
-			repo := repo.NewSubtask(db)
+			repo := repo.NewSubtaskRepo(db)
 
 			subtask, err = repo.Create(subtask)
 

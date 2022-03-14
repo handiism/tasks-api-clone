@@ -6,7 +6,7 @@ import (
 	"gorm.io/gorm"
 )
 
-type User interface {
+type UserRepo interface {
 	Create(user model.User) (model.User, error)
 	FindByEmail(email string) (model.User, error)
 	IsEmailAvailable(email string) bool
@@ -17,17 +17,17 @@ type User interface {
 	DetailUsingEmail(email string) (model.User, error)
 }
 
-type user struct {
+type userRepo struct {
 	db *gorm.DB
 }
 
-func NewUser(db *gorm.DB) User {
-	return &user{
+func NewUserRepo(db *gorm.DB) UserRepo {
+	return &userRepo{
 		db: db,
 	}
 }
 
-func (u *user) Create(user model.User) (model.User, error) {
+func (u *userRepo) Create(user model.User) (model.User, error) {
 	if err := u.db.Create(&user).Error; err != nil {
 		return model.User{}, err
 	}
@@ -35,7 +35,7 @@ func (u *user) Create(user model.User) (model.User, error) {
 	return user, nil
 }
 
-func (u *user) FindByEmail(email string) (model.User, error) {
+func (u *userRepo) FindByEmail(email string) (model.User, error) {
 	var user model.User
 
 	if err := u.db.Where(model.User{Email: email}).First(&user).Error; err != nil {
@@ -45,7 +45,7 @@ func (u *user) FindByEmail(email string) (model.User, error) {
 	return user, nil
 }
 
-func (u *user) IsEmailAvailable(email string) bool {
+func (u *userRepo) IsEmailAvailable(email string) bool {
 	if err := u.db.Where(model.User{Email: email}).
 		First(&model.User{}).Error; err != nil {
 		return true
@@ -54,7 +54,7 @@ func (u *user) IsEmailAvailable(email string) bool {
 	return false
 }
 
-func (u *user) Update(user model.User) (model.User, error) {
+func (u *userRepo) Update(user model.User) (model.User, error) {
 	if err := u.db.Save(&user).Error; err != nil {
 		return model.User{}, err
 	}
@@ -62,7 +62,7 @@ func (u *user) Update(user model.User) (model.User, error) {
 	return user, nil
 }
 
-func (u *user) Delete(user model.User) error {
+func (u *userRepo) Delete(user model.User) error {
 	if err := u.db.Delete(user).Error; err != nil {
 		return err
 	}
@@ -70,7 +70,7 @@ func (u *user) Delete(user model.User) error {
 	return nil
 }
 
-func (u *user) Verify(email, password string) (model.User, error) {
+func (u *userRepo) Verify(email, password string) (model.User, error) {
 	var user model.User
 
 	if err := u.db.Where(model.User{Email: email, Password: password}).
@@ -81,7 +81,7 @@ func (u *user) Verify(email, password string) (model.User, error) {
 	return user, nil
 }
 
-func (u *user) Detail(user model.User) (model.User, error) {
+func (u *userRepo) Detail(user model.User) (model.User, error) {
 	if err := u.db.Preload("Lists.Tasks.Subtasks").
 		First(&user, user.ID).Error; err != nil {
 		return model.User{}, err
@@ -90,7 +90,7 @@ func (u *user) Detail(user model.User) (model.User, error) {
 	return user, nil
 }
 
-func (u *user) DetailUsingEmail(email string) (model.User, error) {
+func (u *userRepo) DetailUsingEmail(email string) (model.User, error) {
 	var user model.User
 
 	if err := u.db.Where(model.User{Email: email}).Preload("Lists.Tasks.Subtasks").

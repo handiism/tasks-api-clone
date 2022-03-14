@@ -16,7 +16,7 @@ func TestRepoTaskCreateSuccess(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
-	task, err := repo.NewTask(db).Create(model.Task{
+	task, err := repo.NewTaskRepo(db).Create(model.Task{
 		ListID: uint(rand.Intn(20) + 1),
 		Name:   "New Task",
 	})
@@ -31,7 +31,7 @@ func TestRepoTaskCreateFailed(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
-	task, err := repo.NewTask(db).Create(model.Task{})
+	task, err := repo.NewTaskRepo(db).Create(model.Task{})
 
 	require.NotNil(t, err)
 	require.Empty(t, task)
@@ -41,7 +41,7 @@ func TestRepoTaskFindSuccess(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
-	task, err := repo.NewTask(db).Find(uint(rand.Intn(20) + 1))
+	task, err := repo.NewTaskRepo(db).Find(uint(rand.Intn(20) + 1))
 
 	require.Nil(t, err)
 	require.NotEmpty(t, task)
@@ -51,7 +51,7 @@ func TestRepoTaskFindFailed(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
-	task, err := repo.NewTask(db).Find(99)
+	task, err := repo.NewTaskRepo(db).Find(99)
 
 	require.NotNil(t, err)
 	require.Empty(t, task)
@@ -71,7 +71,7 @@ func TestRepoTaskUpdateSuccess(t *testing.T) {
 		Valid: false,
 	}
 
-	task, err := repo.NewTask(db).Update(createdTask)
+	task, err := repo.NewTaskRepo(db).Update(createdTask)
 
 	require.Nil(t, err)
 	require.NotEmpty(t, task)
@@ -83,7 +83,7 @@ func TestRepoTaskUpdateFailed(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
-	task, err := repo.NewTask(db).Update(model.Task{})
+	task, err := repo.NewTaskRepo(db).Update(model.Task{})
 
 	require.NotNil(t, err)
 	require.Empty(t, task)
@@ -93,7 +93,7 @@ func TestRepoTaskDeleteSuccess(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
-	err := repo.NewTask(db).Delete(createdTask)
+	err := repo.NewTaskRepo(db).Delete(createdTask)
 
 	require.Nil(t, err)
 }
@@ -102,7 +102,7 @@ func TestRepoTaskDeleteFailed(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
-	err := repo.NewTask(db).Delete(model.Task{})
+	err := repo.NewTaskRepo(db).Delete(model.Task{})
 
 	require.NotNil(t, err)
 }

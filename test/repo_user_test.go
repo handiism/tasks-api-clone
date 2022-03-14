@@ -21,7 +21,7 @@ func TestRepoUserCreateSuccess(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
-	repo := repo.NewUser(db)
+	repo := repo.NewUserRepo(db)
 
 	user, err := repo.Create(model.User{
 		Name:     "Muhammad Handi Rachmawan",
@@ -39,7 +39,7 @@ func TestRepoUserCreateFailed(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
-	repo := repo.NewUser(db)
+	repo := repo.NewUserRepo(db)
 
 	user, err := repo.Create(model.User{
 		ID:        existingUUID,
@@ -60,7 +60,7 @@ func TestRepoUserFindByEmailSuccess(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
-	repo := repo.NewUser(db)
+	repo := repo.NewUserRepo(db)
 
 	user, err := repo.FindByEmail(existingUser.Email)
 
@@ -72,7 +72,7 @@ func TestRepoUserFindByEmailFailed(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
-	user, err := repo.NewUser(db).FindByEmail(
+	user, err := repo.NewUserRepo(db).FindByEmail(
 		existingUser.Email + "adder",
 	)
 
@@ -84,7 +84,7 @@ func TestRepoUserIsEmailAvailabe(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
-	ok := repo.NewUser(db).IsEmailAvailable(
+	ok := repo.NewUserRepo(db).IsEmailAvailable(
 		existingUser.Email + "adder",
 	)
 
@@ -95,7 +95,7 @@ func TestRepoUserIsEmailNotAvailabe(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
-	ok := repo.NewUser(db).IsEmailAvailable(existingUser.Email)
+	ok := repo.NewUserRepo(db).IsEmailAvailable(existingUser.Email)
 
 	require.False(t, ok)
 }
@@ -107,7 +107,7 @@ func TestRepoUserUpdateSuccess(t *testing.T) {
 	existingUser.Email = "change"
 	existingUser.Password = "change"
 
-	user, err := repo.NewUser(db).Update(existingUser)
+	user, err := repo.NewUserRepo(db).Update(existingUser)
 
 	require.Nil(t, err)
 	require.NotEmpty(t, user)
@@ -119,7 +119,7 @@ func TestRepoUserUpdateFailed(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
-	user, err := repo.NewUser(db).Update(model.User{
+	user, err := repo.NewUserRepo(db).Update(model.User{
 		ID:        [16]byte{},
 		Name:      "",
 		Email:     existingEmail,
@@ -138,7 +138,7 @@ func TestRepoUserVerifySuccess(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
-	user, err := repo.NewUser(db).Verify(
+	user, err := repo.NewUserRepo(db).Verify(
 		existingUser.Email,
 		existingUser.Password,
 	)
@@ -151,7 +151,7 @@ func TestRepoUserVerifyFailed(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
-	user, err := repo.NewUser(db).Verify(
+	user, err := repo.NewUserRepo(db).Verify(
 		existingUser.Email,
 		existingUser.Password+"adder",
 	)
@@ -164,7 +164,7 @@ func TestRepoUserDetailSuccess(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
-	user, err := repo.NewUser(db).Detail(model.User{
+	user, err := repo.NewUserRepo(db).Detail(model.User{
 		ID: existingUUID,
 	})
 
@@ -176,7 +176,7 @@ func TestRepoUserDetailFailed(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
-	user, err := repo.NewUser(db).Detail(model.User{
+	user, err := repo.NewUserRepo(db).Detail(model.User{
 		ID:        [16]byte{},
 		Name:      "",
 		Email:     "",
@@ -195,7 +195,7 @@ func TestRepoUserDetailUsingEmailSuccess(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
-	user, err := repo.NewUser(db).DetailUsingEmail(existingEmail)
+	user, err := repo.NewUserRepo(db).DetailUsingEmail(existingEmail)
 
 	require.Nil(t, err)
 	require.NotEmpty(t, user)
@@ -205,7 +205,7 @@ func TestRepoUserDetailUsingEmailFailed(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
-	user, err := repo.NewUser(db).DetailUsingEmail(existingEmail + "adder")
+	user, err := repo.NewUserRepo(db).DetailUsingEmail(existingEmail + "adder")
 
 	require.NotNil(t, err)
 	require.Empty(t, user)
@@ -215,7 +215,7 @@ func TestRepoUserDeleteSuccess(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
-	err := repo.NewUser(db).Delete(existingUser)
+	err := repo.NewUserRepo(db).Delete(existingUser)
 
 	require.Nil(t, err)
 }
@@ -224,7 +224,7 @@ func TestRepoUserDeleteFailed(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
-	err := repo.NewUser(db).Delete(model.User{
+	err := repo.NewUserRepo(db).Delete(model.User{
 		ID:        [16]byte{},
 		Name:      "",
 		Email:     "",
