@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
-	"tasks/config"
+	"github.com/handirachmawan/tasks-api-clone/config"
 )
 
 func main() {

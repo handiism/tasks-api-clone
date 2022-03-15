@@ -1,7 +1,7 @@
 package repo
 
 import (
-	"tasks/model"
+	"github.com/handirachmawan/tasks-api-clone/model"
 
 	"gorm.io/gorm"
 )

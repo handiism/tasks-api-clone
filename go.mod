@@ -1,4 +1,4 @@
-module tasks
+module github.com/handirachmawan/tasks-api-clone
 
 go 1.17
 

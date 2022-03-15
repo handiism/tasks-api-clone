@@ -2,8 +2,8 @@ package test
 
 import (
 	"fmt"
+	"github.com/handirachmawan/tasks-api-clone/helper"
 	"os"
-	"tasks/helper"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"

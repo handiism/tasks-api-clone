@@ -1,9 +1,9 @@
 package test
 
 import (
+	"github.com/handirachmawan/tasks-api-clone/model"
+	"github.com/handirachmawan/tasks-api-clone/repo"
 	"math/rand"
-	"tasks/model"
-	"tasks/repo"
 	"testing"
 
 	"github.com/stretchr/testify/require"

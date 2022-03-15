@@ -1,9 +1,9 @@
 package test
 
 import (
-	"tasks/helper"
-	"tasks/model"
-	"tasks/repo"
+	"github.com/handirachmawan/tasks-api-clone/helper"
+	"github.com/handirachmawan/tasks-api-clone/model"
+	"github.com/handirachmawan/tasks-api-clone/repo"
 	"testing"
 	"time"
 

@@ -2,10 +2,10 @@ package test
 
 import (
 	"database/sql"
+	"github.com/handirachmawan/tasks-api-clone/model"
+	"github.com/handirachmawan/tasks-api-clone/repo"
 	"math/rand"
 	"reflect"
-	"tasks/model"
-	"tasks/repo"
 	"testing"
 	"time"
 

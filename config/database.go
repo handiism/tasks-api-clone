@@ -2,9 +2,9 @@ package config
 
 import (
 	"fmt"
+	"github.com/handirachmawan/tasks-api-clone/helper"
+	"github.com/handirachmawan/tasks-api-clone/model"
 	"os"
-	"tasks/helper"
-	"tasks/model"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"

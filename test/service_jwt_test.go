@@ -1,7 +1,7 @@
 package test
 
 import (
-	"tasks/service"
+	"github.com/handirachmawan/tasks-api-clone/service"
 	"testing"
 
 	"github.com/gin-gonic/gin"

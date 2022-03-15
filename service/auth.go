@@ -1,7 +1,7 @@
 package service
 
 import (
-	"tasks/repo"
+	"github.com/handirachmawan/tasks-api-clone/repo"
 
 	"golang.org/x/crypto/bcrypt"
 )
