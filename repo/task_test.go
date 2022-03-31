@@ -1,18 +1,18 @@
-package test
+package repo_test
 
 import (
 	"database/sql"
-	"github.com/handirachmawan/tasks-api-clone/model"
-	"github.com/handirachmawan/tasks-api-clone/repo"
 	"math/rand"
 	"testing"
 
+	"github.com/handirachmawan/tasks-api-clone/model"
+	"github.com/handirachmawan/tasks-api-clone/repo"
 	"github.com/stretchr/testify/require"
 )
 
 var createdTask model.Task
 
-func TestRepoTaskCreateSuccess(t *testing.T) {
+func TestTaskCreateSuccess(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
@@ -27,7 +27,7 @@ func TestRepoTaskCreateSuccess(t *testing.T) {
 	createdTask = task
 }
 
-func TestRepoTaskCreateFailed(t *testing.T) {
+func TestTaskCreateFailed(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
@@ -37,7 +37,7 @@ func TestRepoTaskCreateFailed(t *testing.T) {
 	require.Empty(t, task)
 }
 
-func TestRepoTaskFindSuccess(t *testing.T) {
+func TestTaskFindSuccess(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
@@ -47,7 +47,7 @@ func TestRepoTaskFindSuccess(t *testing.T) {
 	require.NotEmpty(t, task)
 }
 
-func TestRepoTaskFindFailed(t *testing.T) {
+func TestTaskFindFailed(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
@@ -57,7 +57,7 @@ func TestRepoTaskFindFailed(t *testing.T) {
 	require.Empty(t, task)
 }
 
-func TestRepoTaskUpdateSuccess(t *testing.T) {
+func TestTaskUpdateSuccess(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
@@ -79,7 +79,7 @@ func TestRepoTaskUpdateSuccess(t *testing.T) {
 	createdTask = task
 }
 
-func TestRepoTaskUpdateFailed(t *testing.T) {
+func TestTaskUpdateFailed(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
@@ -89,7 +89,7 @@ func TestRepoTaskUpdateFailed(t *testing.T) {
 	require.Empty(t, task)
 }
 
-func TestRepoTaskDeleteSuccess(t *testing.T) {
+func TestTaskDeleteSuccess(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
@@ -98,7 +98,7 @@ func TestRepoTaskDeleteSuccess(t *testing.T) {
 	require.Nil(t, err)
 }
 
-func TestRepoTaskDeleteFailed(t *testing.T) {
+func TestTaskDeleteFailed(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 

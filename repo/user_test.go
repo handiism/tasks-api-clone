@@ -1,23 +1,23 @@
-package test
+package repo_test
 
 import (
-	"github.com/handirachmawan/tasks-api-clone/helper"
-	"github.com/handirachmawan/tasks-api-clone/model"
-	"github.com/handirachmawan/tasks-api-clone/repo"
 	"testing"
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/handirachmawan/tasks-api-clone/model"
+	"github.com/handirachmawan/tasks-api-clone/repo"
+	"github.com/spf13/viper"
 	"github.com/stretchr/testify/require"
 )
 
 var (
-	existingUser  model.User
-	existingUUID  uuid.UUID = helper.ExistingUserUUID()
-	existingEmail string    = helper.ExistingUserEmail()
+	existingUser    model.User
+	existingUUID, _        = uuid.Parse(viper.GetString("USER_UUID"))
+	existingEmail   string = viper.GetString("USER_EMAIL")
 )
 
-func TestRepoUserCreateSuccess(t *testing.T) {
+func TestUserCreateSuccess(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
@@ -35,7 +35,7 @@ func TestRepoUserCreateSuccess(t *testing.T) {
 	existingUser = user
 }
 
-func TestRepoUserCreateFailed(t *testing.T) {
+func TestUserCreateFailed(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
@@ -56,7 +56,7 @@ func TestRepoUserCreateFailed(t *testing.T) {
 	require.Empty(t, user)
 }
 
-func TestRepoUserFindByEmailSuccess(t *testing.T) {
+func TestUserFindByEmailSuccess(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
@@ -68,7 +68,7 @@ func TestRepoUserFindByEmailSuccess(t *testing.T) {
 	require.NotEmpty(t, user)
 }
 
-func TestRepoUserFindByEmailFailed(t *testing.T) {
+func TestUserFindByEmailFailed(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
@@ -80,7 +80,7 @@ func TestRepoUserFindByEmailFailed(t *testing.T) {
 	require.Empty(t, user)
 }
 
-func TestRepoUserIsEmailAvailabe(t *testing.T) {
+func TestUserIsEmailAvailabe(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
@@ -91,7 +91,7 @@ func TestRepoUserIsEmailAvailabe(t *testing.T) {
 	require.True(t, ok)
 }
 
-func TestRepoUserIsEmailNotAvailabe(t *testing.T) {
+func TestUserIsEmailNotAvailabe(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
@@ -99,7 +99,7 @@ func TestRepoUserIsEmailNotAvailabe(t *testing.T) {
 
 	require.False(t, ok)
 }
-func TestRepoUserUpdateSuccess(t *testing.T) {
+func TestUserUpdateSuccess(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
@@ -115,7 +115,7 @@ func TestRepoUserUpdateSuccess(t *testing.T) {
 	existingUser = user
 }
 
-func TestRepoUserUpdateFailed(t *testing.T) {
+func TestUserUpdateFailed(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
@@ -134,7 +134,7 @@ func TestRepoUserUpdateFailed(t *testing.T) {
 	require.Empty(t, user)
 }
 
-func TestRepoUserVerifySuccess(t *testing.T) {
+func TestUserVerifySuccess(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
@@ -147,7 +147,7 @@ func TestRepoUserVerifySuccess(t *testing.T) {
 	require.NotEmpty(t, user)
 }
 
-func TestRepoUserVerifyFailed(t *testing.T) {
+func TestUserVerifyFailed(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
@@ -160,7 +160,7 @@ func TestRepoUserVerifyFailed(t *testing.T) {
 	require.Empty(t, user)
 }
 
-func TestRepoUserDetailSuccess(t *testing.T) {
+func TestUserDetailSuccess(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
@@ -172,7 +172,7 @@ func TestRepoUserDetailSuccess(t *testing.T) {
 	require.NotEmpty(t, user)
 }
 
-func TestRepoUserDetailFailed(t *testing.T) {
+func TestUserDetailFailed(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
@@ -191,7 +191,7 @@ func TestRepoUserDetailFailed(t *testing.T) {
 	require.Empty(t, user)
 }
 
-func TestRepoUserDetailUsingEmailSuccess(t *testing.T) {
+func TestUserDetailUsingEmailSuccess(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
@@ -201,7 +201,7 @@ func TestRepoUserDetailUsingEmailSuccess(t *testing.T) {
 	require.NotEmpty(t, user)
 }
 
-func TestRepoUserDetailUsingEmailFailed(t *testing.T) {
+func TestUserDetailUsingEmailFailed(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
@@ -211,7 +211,7 @@ func TestRepoUserDetailUsingEmailFailed(t *testing.T) {
 	require.Empty(t, user)
 }
 
-func TestRepoUserDeleteSuccess(t *testing.T) {
+func TestUserDeleteSuccess(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
@@ -220,7 +220,7 @@ func TestRepoUserDeleteSuccess(t *testing.T) {
 	require.Nil(t, err)
 }
 
-func TestRepoUserDeleteFailed(t *testing.T) {
+func TestUserDeleteFailed(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 

@@ -1,17 +1,18 @@
-package test
+package repo_test
 
 import (
-	"github.com/handirachmawan/tasks-api-clone/model"
-	"github.com/handirachmawan/tasks-api-clone/repo"
 	"math/rand"
 	"testing"
+
+	"github.com/handirachmawan/tasks-api-clone/model"
+	"github.com/handirachmawan/tasks-api-clone/repo"
 
 	"github.com/stretchr/testify/require"
 )
 
 var createdSubtask model.Subtask
 
-func TestRepoSubtaskCreateSuccess(t *testing.T) {
+func TestSubtaskCreateSuccess(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
@@ -27,7 +28,7 @@ func TestRepoSubtaskCreateSuccess(t *testing.T) {
 	createdSubtask = subtask
 }
 
-func TestRepoSubtaskCreateFailed(t *testing.T) {
+func TestSubtaskCreateFailed(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
@@ -37,7 +38,7 @@ func TestRepoSubtaskCreateFailed(t *testing.T) {
 	require.Empty(t, subtask)
 }
 
-func TestRepoSubtaskFindSuccess(t *testing.T) {
+func TestSubtaskFindSuccess(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
@@ -47,7 +48,7 @@ func TestRepoSubtaskFindSuccess(t *testing.T) {
 	require.NotEmpty(t, subtask)
 }
 
-func TestRepoSubtaskFindFailed(t *testing.T) {
+func TestSubtaskFindFailed(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
@@ -57,7 +58,7 @@ func TestRepoSubtaskFindFailed(t *testing.T) {
 	require.Empty(t, subtask)
 }
 
-func TestRepoSubtaskUpdate(t *testing.T) {
+func TestSubtaskUpdate(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
@@ -72,7 +73,7 @@ func TestRepoSubtaskUpdate(t *testing.T) {
 	createdSubtask = subtask
 }
 
-func TestRepoSubtaskUpdateFailed(t *testing.T) {
+func TestSubtaskUpdateFailed(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
@@ -85,7 +86,7 @@ func TestRepoSubtaskUpdateFailed(t *testing.T) {
 	require.Empty(t, subtask)
 }
 
-func TestRepoSubtaskDeleteSuccess(t *testing.T) {
+func TestSubtaskDeleteSuccess(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
@@ -94,7 +95,7 @@ func TestRepoSubtaskDeleteSuccess(t *testing.T) {
 	require.Nil(t, err)
 }
 
-func TestRepoSubtaskDeleteFailed(t *testing.T) {
+func TestSubtaskDeleteFailed(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 

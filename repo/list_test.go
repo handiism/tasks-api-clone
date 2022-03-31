@@ -1,19 +1,19 @@
-package test
+package repo_test
 
 import (
-	"github.com/handirachmawan/tasks-api-clone/model"
-	"github.com/handirachmawan/tasks-api-clone/repo"
 	"math/rand"
 	"testing"
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/handirachmawan/tasks-api-clone/model"
+	"github.com/handirachmawan/tasks-api-clone/repo"
 	"github.com/stretchr/testify/require"
 )
 
 var list model.List
 
-func TestRepoListCreateSuccess(t *testing.T) {
+func TestListCreateSuccess(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
@@ -28,7 +28,7 @@ func TestRepoListCreateSuccess(t *testing.T) {
 	list = createdList
 }
 
-func TestRepoListCreateFailed(t *testing.T) {
+func TestListCreateFailed(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
@@ -41,7 +41,7 @@ func TestRepoListCreateFailed(t *testing.T) {
 	require.Empty(t, list)
 }
 
-func TestRepoListFindSuccess(t *testing.T) {
+func TestListFindSuccess(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
@@ -51,7 +51,7 @@ func TestRepoListFindSuccess(t *testing.T) {
 	require.NotEmpty(t, list)
 }
 
-func TestRepoListFindFailed(t *testing.T) {
+func TestListFindFailed(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
@@ -61,7 +61,7 @@ func TestRepoListFindFailed(t *testing.T) {
 	require.Empty(t, list)
 }
 
-func TestRepoListUpdateSuccess(t *testing.T) {
+func TestListUpdateSuccess(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
@@ -72,7 +72,7 @@ func TestRepoListUpdateSuccess(t *testing.T) {
 	require.Nil(t, err)
 	require.NotEmpty(t, list)
 }
-func TestRepoListUpdateFailed(t *testing.T) {
+func TestListUpdateFailed(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
@@ -89,7 +89,7 @@ func TestRepoListUpdateFailed(t *testing.T) {
 	require.Empty(t, list)
 }
 
-func TestRepoListDeleteSuccess(t *testing.T) {
+func TestListDeleteSuccess(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
@@ -98,7 +98,7 @@ func TestRepoListDeleteSuccess(t *testing.T) {
 	require.Nil(t, err)
 }
 
-func TestRepoListDeleteFailed(t *testing.T) {
+func TestListDeleteFailed(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
