@@ -2,18 +2,25 @@ package config
 
 import (
 	"fmt"
-	"github.com/handirachmawan/tasks-api-clone/helper"
-	"github.com/handirachmawan/tasks-api-clone/model"
 	"os"
+
+	"github.com/handirachmawan/tasks-api-clone/model"
+	"github.com/spf13/viper"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
-func OpenDBConn() *gorm.DB {
-	helper.GetEnv()
+func init() {
+	viper.SetConfigFile(`../.env`)
+	err := viper.ReadInConfig()
+	if err != nil {
+		panic(err)
+	}
+}
 
-	user := os.Getenv("DB_USER")
+func OpenDBConn() *gorm.DB {
+	user := viper.GetString("DB_USER")
 	password := os.Getenv("DB_PASSWORD")
 	hostname := os.Getenv("DB_HOSTNAME")
 	port := os.Getenv("DB_PORT")
