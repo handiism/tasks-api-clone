@@ -1,0 +1,26 @@
+version: "3"
+
+dotenv: [".env"]
+
+tasks:
+  drop:
+    cmds:
+      - PGPASSWORD=$DB_PASSWORD dropdb -U $DB_USER $DB_DATABASE
+      - PGPASSWORD=$DB_PASSWORD dropdb -U $DB_USER $DB_DATABASE_TEST
+
+  create:
+    cmds:
+      - PGPASSWORD=$DB_PASSWORD createdb -U $DB_USER $DB_DATABASE
+      - PGPASSWORD=$DB_PASSWORD createdb -U $DB_USER $DB_DATABASE_TEST
+
+  fill:
+    cmds:
+      - PGPASSWORD=$DB_PASSWORD psql -o temp -q -U $DB_USER $DB_DATABASE_TEST < db_test.sql
+
+  repo:
+    dir: repo
+    cmds:
+      - go test -v -run User
+      - go test -v -run List
+      - go test -v -run Task
+      - go test -v -run Subtask
