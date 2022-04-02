@@ -7,7 +7,7 @@ import (
 
 	"github.com/handirachmawan/tasks-api-clone/model"
 	"github.com/handirachmawan/tasks-api-clone/repo"
-	"github.com/stretchr/testify/require"
+	"github.com/stretchr/testify/assert"
 )
 
 var createdTask model.Task
@@ -21,8 +21,8 @@ func TestTaskCreateSuccess(t *testing.T) {
 		Name:   "New Task",
 	})
 
-	require.Nil(t, err)
-	require.NotEmpty(t, task)
+	assert.Nil(t, err)
+	assert.NotEmpty(t, task)
 
 	createdTask = task
 }
@@ -33,8 +33,8 @@ func TestTaskCreateFailed(t *testing.T) {
 
 	task, err := repo.NewTaskRepo(db).Create(model.Task{})
 
-	require.NotNil(t, err)
-	require.Empty(t, task)
+	assert.NotNil(t, err)
+	assert.Empty(t, task)
 }
 
 func TestTaskFindSuccess(t *testing.T) {
@@ -43,8 +43,8 @@ func TestTaskFindSuccess(t *testing.T) {
 
 	task, err := repo.NewTaskRepo(db).Find(uint(rand.Intn(20) + 1))
 
-	require.Nil(t, err)
-	require.NotEmpty(t, task)
+	assert.Nil(t, err)
+	assert.NotEmpty(t, task)
 }
 
 func TestTaskFindFailed(t *testing.T) {
@@ -53,8 +53,8 @@ func TestTaskFindFailed(t *testing.T) {
 
 	task, err := repo.NewTaskRepo(db).Find(99)
 
-	require.NotNil(t, err)
-	require.Empty(t, task)
+	assert.NotNil(t, err)
+	assert.Empty(t, task)
 }
 
 func TestTaskUpdateSuccess(t *testing.T) {
@@ -73,8 +73,8 @@ func TestTaskUpdateSuccess(t *testing.T) {
 
 	task, err := repo.NewTaskRepo(db).Update(createdTask)
 
-	require.Nil(t, err)
-	require.NotEmpty(t, task)
+	assert.Nil(t, err)
+	assert.NotEmpty(t, task)
 
 	createdTask = task
 }
@@ -85,8 +85,8 @@ func TestTaskUpdateFailed(t *testing.T) {
 
 	task, err := repo.NewTaskRepo(db).Update(model.Task{})
 
-	require.NotNil(t, err)
-	require.Empty(t, task)
+	assert.NotNil(t, err)
+	assert.Empty(t, task)
 }
 
 func TestTaskDeleteSuccess(t *testing.T) {
@@ -95,7 +95,7 @@ func TestTaskDeleteSuccess(t *testing.T) {
 
 	err := repo.NewTaskRepo(db).Delete(createdTask)
 
-	require.Nil(t, err)
+	assert.Nil(t, err)
 }
 
 func TestTaskDeleteFailed(t *testing.T) {
@@ -104,5 +104,5 @@ func TestTaskDeleteFailed(t *testing.T) {
 
 	err := repo.NewTaskRepo(db).Delete(model.Task{})
 
-	require.NotNil(t, err)
+	assert.NotNil(t, err)
 }

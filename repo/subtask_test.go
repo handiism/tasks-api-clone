@@ -6,8 +6,7 @@ import (
 
 	"github.com/handirachmawan/tasks-api-clone/model"
 	"github.com/handirachmawan/tasks-api-clone/repo"
-
-	"github.com/stretchr/testify/require"
+	"github.com/stretchr/testify/assert"
 )
 
 var createdSubtask model.Subtask
@@ -22,8 +21,8 @@ func TestSubtaskCreateSuccess(t *testing.T) {
 		IsDone: false,
 	})
 
-	require.Nil(t, err)
-	require.NotEmpty(t, subtask)
+	assert.Nil(t, err)
+	assert.NotEmpty(t, subtask)
 
 	createdSubtask = subtask
 }
@@ -34,8 +33,8 @@ func TestSubtaskCreateFailed(t *testing.T) {
 
 	subtask, err := repo.NewSubtaskRepo(db).Create(model.Subtask{})
 
-	require.NotNil(t, err)
-	require.Empty(t, subtask)
+	assert.NotNil(t, err)
+	assert.Empty(t, subtask)
 }
 
 func TestSubtaskFindSuccess(t *testing.T) {
@@ -44,8 +43,8 @@ func TestSubtaskFindSuccess(t *testing.T) {
 
 	subtask, err := repo.NewSubtaskRepo(db).Find(uint(rand.Intn(20) + 1))
 
-	require.Nil(t, err)
-	require.NotEmpty(t, subtask)
+	assert.Nil(t, err)
+	assert.NotEmpty(t, subtask)
 }
 
 func TestSubtaskFindFailed(t *testing.T) {
@@ -54,8 +53,8 @@ func TestSubtaskFindFailed(t *testing.T) {
 
 	subtask, err := repo.NewSubtaskRepo(db).Find(999)
 
-	require.NotNil(t, err)
-	require.Empty(t, subtask)
+	assert.NotNil(t, err)
+	assert.Empty(t, subtask)
 }
 
 func TestSubtaskUpdate(t *testing.T) {
@@ -67,8 +66,8 @@ func TestSubtaskUpdate(t *testing.T) {
 
 	subtask, err := repo.NewSubtaskRepo(db).Update(createdSubtask)
 
-	require.Nil(t, err)
-	require.NotEmpty(t, subtask)
+	assert.Nil(t, err)
+	assert.NotEmpty(t, subtask)
 
 	createdSubtask = subtask
 }
@@ -82,8 +81,8 @@ func TestSubtaskUpdateFailed(t *testing.T) {
 
 	subtask, err := repo.NewSubtaskRepo(db).Update(model.Subtask{})
 
-	require.NotNil(t, err)
-	require.Empty(t, subtask)
+	assert.NotNil(t, err)
+	assert.Empty(t, subtask)
 }
 
 func TestSubtaskDeleteSuccess(t *testing.T) {
@@ -92,7 +91,7 @@ func TestSubtaskDeleteSuccess(t *testing.T) {
 
 	err := repo.NewSubtaskRepo(db).Delete(createdSubtask)
 
-	require.Nil(t, err)
+	assert.Nil(t, err)
 }
 
 func TestSubtaskDeleteFailed(t *testing.T) {
@@ -101,5 +100,5 @@ func TestSubtaskDeleteFailed(t *testing.T) {
 
 	err := repo.NewSubtaskRepo(db).Delete(model.Subtask{})
 
-	require.NotNil(t, err)
+	assert.NotNil(t, err)
 }

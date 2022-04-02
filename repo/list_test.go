@@ -8,7 +8,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/handirachmawan/tasks-api-clone/model"
 	"github.com/handirachmawan/tasks-api-clone/repo"
-	"github.com/stretchr/testify/require"
+	"github.com/stretchr/testify/assert"
 )
 
 var list model.List
@@ -22,8 +22,8 @@ func TestListCreateSuccess(t *testing.T) {
 		Title:  "New List",
 	})
 
-	require.Nil(t, err)
-	require.NotEmpty(t, createdList)
+	assert.Nil(t, err)
+	assert.NotEmpty(t, createdList)
 
 	list = createdList
 }
@@ -37,8 +37,8 @@ func TestListCreateFailed(t *testing.T) {
 		Title:  "New Failed List",
 	})
 
-	require.NotNil(t, err)
-	require.Empty(t, list)
+	assert.NotNil(t, err)
+	assert.Empty(t, list)
 }
 
 func TestListFindSuccess(t *testing.T) {
@@ -47,8 +47,8 @@ func TestListFindSuccess(t *testing.T) {
 
 	list, err := repo.NewListRepo(db).Find(uint(1 + rand.Intn(20)))
 
-	require.Nil(t, err)
-	require.NotEmpty(t, list)
+	assert.Nil(t, err)
+	assert.NotEmpty(t, list)
 }
 
 func TestListFindFailed(t *testing.T) {
@@ -57,8 +57,8 @@ func TestListFindFailed(t *testing.T) {
 
 	list, err := repo.NewListRepo(db).Find(180)
 
-	require.NotNil(t, err)
-	require.Empty(t, list)
+	assert.NotNil(t, err)
+	assert.Empty(t, list)
 }
 
 func TestListUpdateSuccess(t *testing.T) {
@@ -69,8 +69,8 @@ func TestListUpdateSuccess(t *testing.T) {
 
 	list, err := repo.NewListRepo(db).Update(list)
 
-	require.Nil(t, err)
-	require.NotEmpty(t, list)
+	assert.Nil(t, err)
+	assert.NotEmpty(t, list)
 }
 func TestListUpdateFailed(t *testing.T) {
 	db := openDBConn()
@@ -85,8 +85,8 @@ func TestListUpdateFailed(t *testing.T) {
 		Tasks:     []model.Task{},
 	})
 
-	require.NotNil(t, err)
-	require.Empty(t, list)
+	assert.NotNil(t, err)
+	assert.Empty(t, list)
 }
 
 func TestListDeleteSuccess(t *testing.T) {
@@ -95,7 +95,7 @@ func TestListDeleteSuccess(t *testing.T) {
 
 	err := repo.NewListRepo(db).Delete(list)
 
-	require.Nil(t, err)
+	assert.Nil(t, err)
 }
 
 func TestListDeleteFailed(t *testing.T) {
@@ -111,5 +111,5 @@ func TestListDeleteFailed(t *testing.T) {
 		Tasks:     []model.Task{},
 	})
 
-	require.NotNil(t, err)
+	assert.NotNil(t, err)
 }
