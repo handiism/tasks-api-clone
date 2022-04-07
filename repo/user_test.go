@@ -22,7 +22,7 @@ func TestUserCreateSuccess(t *testing.T) {
 
 	repo := repo.NewUserRepo(db)
 
-	user, err := repo.Create(model.User{
+	user, err := repo.Store(model.User{
 		Name:     "Muhammad Handi Rachmawan",
 		Email:    "email2@handiism.com",
 		Password: "p4ssw*rd",
@@ -40,7 +40,7 @@ func TestUserCreateFailed(t *testing.T) {
 
 	repo := repo.NewUserRepo(db)
 
-	user, err := repo.Create(model.User{
+	user, err := repo.Store(model.User{
 		ID:        existingUUID,
 		Name:      "",
 		Email:     existingEmail,
@@ -79,25 +79,6 @@ func TestUserFindByEmailFailed(t *testing.T) {
 	assert.Empty(t, user)
 }
 
-func TestUserIsEmailAvailabe(t *testing.T) {
-	db := openDBConn()
-	defer closeDBConn(db)
-
-	ok := repo.NewUserRepo(db).IsEmailAvailable(
-		existingUser.Email + "adder",
-	)
-
-	assert.True(t, ok)
-}
-
-func TestUserIsEmailNotAvailabe(t *testing.T) {
-	db := openDBConn()
-	defer closeDBConn(db)
-
-	ok := repo.NewUserRepo(db).IsEmailAvailable(existingUser.Email)
-
-	assert.False(t, ok)
-}
 func TestUserUpdateSuccess(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
@@ -133,37 +114,11 @@ func TestUserUpdateFailed(t *testing.T) {
 	assert.Empty(t, user)
 }
 
-func TestUserVerifySuccess(t *testing.T) {
+func TestUserPreloadSuccess(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
-	user, err := repo.NewUserRepo(db).Verify(
-		existingUser.Email,
-		existingUser.Password,
-	)
-
-	assert.Nil(t, err)
-	assert.NotEmpty(t, user)
-}
-
-func TestUserVerifyFailed(t *testing.T) {
-	db := openDBConn()
-	defer closeDBConn(db)
-
-	user, err := repo.NewUserRepo(db).Verify(
-		existingUser.Email,
-		existingUser.Password+"adder",
-	)
-
-	assert.NotNil(t, err)
-	assert.Empty(t, user)
-}
-
-func TestUserDetailSuccess(t *testing.T) {
-	db := openDBConn()
-	defer closeDBConn(db)
-
-	user, err := repo.NewUserRepo(db).Detail(model.User{
+	user, err := repo.NewUserRepo(db).Preload(model.User{
 		ID: existingUUID,
 	})
 
@@ -171,11 +126,11 @@ func TestUserDetailSuccess(t *testing.T) {
 	assert.NotEmpty(t, user)
 }
 
-func TestUserDetailFailed(t *testing.T) {
+func TestUserPreloadFailed(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
-	user, err := repo.NewUserRepo(db).Detail(model.User{
+	user, err := repo.NewUserRepo(db).Preload(model.User{
 		ID:        [16]byte{},
 		Name:      "",
 		Email:     "",
@@ -185,26 +140,6 @@ func TestUserDetailFailed(t *testing.T) {
 		Token:     "",
 		Lists:     []model.List{},
 	})
-
-	assert.NotNil(t, err)
-	assert.Empty(t, user)
-}
-
-func TestUserDetailUsingEmailSuccess(t *testing.T) {
-	db := openDBConn()
-	defer closeDBConn(db)
-
-	user, err := repo.NewUserRepo(db).DetailUsingEmail(existingEmail)
-
-	assert.Nil(t, err)
-	assert.NotEmpty(t, user)
-}
-
-func TestUserDetailUsingEmailFailed(t *testing.T) {
-	db := openDBConn()
-	defer closeDBConn(db)
-
-	user, err := repo.NewUserRepo(db).DetailUsingEmail(existingEmail + "adder")
 
 	assert.NotNil(t, err)
 	assert.Empty(t, user)

@@ -17,7 +17,7 @@ func TestListCreateSuccess(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
-	createdList, err := repo.NewListRepo(db).Create(model.List{
+	createdList, err := repo.NewListRepo(db).Store(model.List{
 		UserID: existingUUID,
 		Title:  "New List",
 	})
@@ -32,7 +32,7 @@ func TestListCreateFailed(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
-	list, err := repo.NewListRepo(db).Create(model.List{
+	list, err := repo.NewListRepo(db).Store(model.List{
 		UserID: uuid.New(),
 		Title:  "New Failed List",
 	})

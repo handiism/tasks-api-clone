@@ -7,10 +7,12 @@ import (
 )
 
 type ListRepo interface {
-	Create(model.List) (model.List, error)
+	Store(model.List) (model.List, error)
 	Update(model.List) (model.List, error)
 	Delete(model.List) error
 	Find(id uint) (model.List, error)
+	Preload(list model.List) (model.List, error)
+	PreloadAll(list model.List) (model.List, error)
 }
 
 type listRepo struct {
@@ -21,7 +23,7 @@ func NewListRepo(db *gorm.DB) ListRepo {
 	return &listRepo{db}
 }
 
-func (l *listRepo) Create(list model.List) (model.List, error) {
+func (l *listRepo) Store(list model.List) (model.List, error) {
 	if err := l.db.Create(&list).Error; err != nil {
 		return model.List{}, err
 	}
@@ -54,4 +56,22 @@ func (l *listRepo) Delete(list model.List) error {
 	}
 
 	return nil
+}
+
+func (l *listRepo) Preload(list model.List) (model.List, error) {
+	if err := l.db.Preload("Tasks").
+		First(&list, list.ID).Error; err != nil {
+		return model.List{}, err
+	}
+
+	return list, nil
+}
+
+func (l *listRepo) PreloadAll(list model.List) (model.List, error) {
+	if err := l.db.Preload("Tasks.Subtasks").
+		First(&list, list.ID).Error; err != nil {
+		return model.List{}, err
+	}
+
+	return list, nil
 }

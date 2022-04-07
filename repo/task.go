@@ -7,10 +7,11 @@ import (
 )
 
 type TaskRepo interface {
-	Create(model.Task) (model.Task, error)
+	Store(model.Task) (model.Task, error)
 	Find(id uint) (model.Task, error)
-	Update(model.Task) (model.Task, error)
-	Delete(model.Task) error
+	Update(task model.Task) (model.Task, error)
+	Delete(task model.Task) error
+	Preload(task model.Task) (model.Task, error)
 }
 
 type taskRepo struct {
@@ -21,7 +22,7 @@ func NewTaskRepo(db *gorm.DB) TaskRepo {
 	return &taskRepo{db}
 }
 
-func (t *taskRepo) Create(task model.Task) (model.Task, error) {
+func (t *taskRepo) Store(task model.Task) (model.Task, error) {
 	if err := t.db.Create(&task).Error; err != nil {
 		return model.Task{}, err
 	}
@@ -53,4 +54,13 @@ func (t *taskRepo) Delete(task model.Task) error {
 	}
 
 	return nil
+}
+
+func (t *taskRepo) Preload(task model.Task) (model.Task, error) {
+	if err := t.db.Preload("Subtasks").
+		First(&task, task.ID).Error; err != nil {
+		return model.Task{}, err
+	}
+
+	return task, nil
 }

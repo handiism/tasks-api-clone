@@ -9,14 +9,6 @@ import (
 	"gorm.io/gorm/logger"
 )
 
-func init() {
-	viper.SetConfigFile(`../.env`)
-	err := viper.ReadInConfig()
-	if err != nil {
-		panic(err)
-	}
-}
-
 func openDBConn() *gorm.DB {
 	user := viper.GetString("DB_USER")
 	password := viper.GetString("DB_PASSWORD")

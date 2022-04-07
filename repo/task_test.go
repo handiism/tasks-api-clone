@@ -16,7 +16,7 @@ func TestTaskCreateSuccess(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
-	task, err := repo.NewTaskRepo(db).Create(model.Task{
+	task, err := repo.NewTaskRepo(db).Store(model.Task{
 		ListID: uint(rand.Intn(20) + 1),
 		Name:   "New Task",
 	})
@@ -31,7 +31,7 @@ func TestTaskCreateFailed(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
-	task, err := repo.NewTaskRepo(db).Create(model.Task{})
+	task, err := repo.NewTaskRepo(db).Store(model.Task{})
 
 	assert.NotNil(t, err)
 	assert.Empty(t, task)

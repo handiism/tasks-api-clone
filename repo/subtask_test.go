@@ -15,7 +15,7 @@ func TestSubtaskCreateSuccess(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
-	subtask, err := repo.NewSubtaskRepo(db).Create(model.Subtask{
+	subtask, err := repo.NewSubtaskRepo(db).Store(model.Subtask{
 		TaskID: uint(rand.Intn(20) + 1),
 		Name:   "New Subtask",
 		IsDone: false,
@@ -31,7 +31,7 @@ func TestSubtaskCreateFailed(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
-	subtask, err := repo.NewSubtaskRepo(db).Create(model.Subtask{})
+	subtask, err := repo.NewSubtaskRepo(db).Store(model.Subtask{})
 
 	assert.NotNil(t, err)
 	assert.Empty(t, subtask)
