@@ -5,7 +5,6 @@ import (
 
 	"github.com/handirachmawan/tasks-api-clone/model"
 	"github.com/spf13/viper"
-
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
