@@ -7,10 +7,10 @@ import (
 )
 
 type SubtaskRepo interface {
-	Create(model.Subtask) (model.Subtask, error)
+	Store(model.Subtask) (model.Subtask, error)
 	Find(id uint) (model.Subtask, error)
-	Update(model.Subtask) (model.Subtask, error)
-	Delete(model.Subtask) error
+	Update(subtask model.Subtask) (model.Subtask, error)
+	Delete(subtask model.Subtask) error
 }
 
 type subtaskRepo struct {
@@ -21,7 +21,7 @@ func NewSubtaskRepo(db *gorm.DB) SubtaskRepo {
 	return &subtaskRepo{db}
 }
 
-func (s *subtaskRepo) Create(subtask model.Subtask) (model.Subtask, error) {
+func (s *subtaskRepo) Store(subtask model.Subtask) (model.Subtask, error) {
 	if err := s.db.Create(&subtask).Error; err != nil {
 		return model.Subtask{}, err
 	}

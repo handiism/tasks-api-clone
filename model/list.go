@@ -7,12 +7,12 @@ import (
 )
 
 type List struct {
-	ID        uint      `json:"id" faker:"-"`
-	UserID    uuid.UUID `gorm:"type:uuid;not null" json:"user_id" faker:"-"`
-	Title     string    `gorm:"size:255;not null" json:"title" faker:"word"`
-	CreatedAt time.Time `gorm:"autoCreateTime" json:"created_at" faker:"-"`
-	UpdatedAt time.Time `gorm:"autoUpdateTime" json:"updated_at" faker:"-"`
-	Tasks     []Task    `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL" json:"tasks" faker:"-"`
+	ID        uint      `json:"id"`
+	UserID    uuid.UUID `gorm:"type:uuid;not null" json:"user_id"`
+	Title     string    `gorm:"size:255;not null" json:"title"`
+	CreatedAt time.Time `gorm:"autoCreateTime" json:"created_at"`
+	UpdatedAt time.Time `gorm:"autoUpdateTime" json:"updated_at"`
+	Tasks     []Task    `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL" json:"tasks,omitempty"`
 }
 
 func (List) TableName() string {

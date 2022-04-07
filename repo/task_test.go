@@ -1,63 +1,63 @@
-package test
+package repo_test
 
 import (
 	"database/sql"
-	"github.com/handirachmawan/tasks-api-clone/model"
-	"github.com/handirachmawan/tasks-api-clone/repo"
 	"math/rand"
 	"testing"
 
-	"github.com/stretchr/testify/require"
+	"github.com/handirachmawan/tasks-api-clone/model"
+	"github.com/handirachmawan/tasks-api-clone/repo"
+	"github.com/stretchr/testify/assert"
 )
 
 var createdTask model.Task
 
-func TestRepoTaskCreateSuccess(t *testing.T) {
+func TestTaskCreateSuccess(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
-	task, err := repo.NewTaskRepo(db).Create(model.Task{
+	task, err := repo.NewTaskRepo(db).Store(model.Task{
 		ListID: uint(rand.Intn(20) + 1),
 		Name:   "New Task",
 	})
 
-	require.Nil(t, err)
-	require.NotEmpty(t, task)
+	assert.Nil(t, err)
+	assert.NotEmpty(t, task)
 
 	createdTask = task
 }
 
-func TestRepoTaskCreateFailed(t *testing.T) {
+func TestTaskCreateFailed(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
-	task, err := repo.NewTaskRepo(db).Create(model.Task{})
+	task, err := repo.NewTaskRepo(db).Store(model.Task{})
 
-	require.NotNil(t, err)
-	require.Empty(t, task)
+	assert.NotNil(t, err)
+	assert.Empty(t, task)
 }
 
-func TestRepoTaskFindSuccess(t *testing.T) {
+func TestTaskFindSuccess(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
 	task, err := repo.NewTaskRepo(db).Find(uint(rand.Intn(20) + 1))
 
-	require.Nil(t, err)
-	require.NotEmpty(t, task)
+	assert.Nil(t, err)
+	assert.NotEmpty(t, task)
 }
 
-func TestRepoTaskFindFailed(t *testing.T) {
+func TestTaskFindFailed(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
 	task, err := repo.NewTaskRepo(db).Find(99)
 
-	require.NotNil(t, err)
-	require.Empty(t, task)
+	assert.NotNil(t, err)
+	assert.Empty(t, task)
 }
 
-func TestRepoTaskUpdateSuccess(t *testing.T) {
+func TestTaskUpdateSuccess(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
@@ -73,36 +73,36 @@ func TestRepoTaskUpdateSuccess(t *testing.T) {
 
 	task, err := repo.NewTaskRepo(db).Update(createdTask)
 
-	require.Nil(t, err)
-	require.NotEmpty(t, task)
+	assert.Nil(t, err)
+	assert.NotEmpty(t, task)
 
 	createdTask = task
 }
 
-func TestRepoTaskUpdateFailed(t *testing.T) {
+func TestTaskUpdateFailed(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
 	task, err := repo.NewTaskRepo(db).Update(model.Task{})
 
-	require.NotNil(t, err)
-	require.Empty(t, task)
+	assert.NotNil(t, err)
+	assert.Empty(t, task)
 }
 
-func TestRepoTaskDeleteSuccess(t *testing.T) {
+func TestTaskDeleteSuccess(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
 	err := repo.NewTaskRepo(db).Delete(createdTask)
 
-	require.Nil(t, err)
+	assert.Nil(t, err)
 }
 
-func TestRepoTaskDeleteFailed(t *testing.T) {
+func TestTaskDeleteFailed(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
 	err := repo.NewTaskRepo(db).Delete(model.Task{})
 
-	require.NotNil(t, err)
+	assert.NotNil(t, err)
 }

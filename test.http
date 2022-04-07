@@ -1,0 +1,26 @@
+### Register
+POST http://localhost:8080/register
+Content-Type: application/json
+Accept: application/json
+
+{
+    "name":"Muhammad Handi Rachmawan",
+    "email":"mail@handiism.id",
+    "password": "p4ssword"
+}
+
+### Login
+POST http://localhost:8080/login
+Content-Type: application/json
+Accept: application/json
+
+{
+    "email":"mail@handiism.id",
+    "password": "p4ssword"
+}
+
+### Fetch
+GET http://localhost:8080/user/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiMWUxMzM3ZGEtNDY4Zi00OTAwLTg0MjItMWE3ZmYxOTU4OTFlIiwiaXNzIjoiSGFuZGkgUmFjaG1hd2FuIiwiZXhwIjoxNjQ5Mzk5NzUzfQ.4NijQdeQjyME8BWDUhvryS-KMz5yV_oCPLrgUPeh6Cw
+Accept: application/json

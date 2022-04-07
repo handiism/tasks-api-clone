@@ -1,63 +1,63 @@
-package test
+package repo_test
 
 import (
-	"github.com/handirachmawan/tasks-api-clone/model"
-	"github.com/handirachmawan/tasks-api-clone/repo"
 	"math/rand"
 	"testing"
 
-	"github.com/stretchr/testify/require"
+	"github.com/handirachmawan/tasks-api-clone/model"
+	"github.com/handirachmawan/tasks-api-clone/repo"
+	"github.com/stretchr/testify/assert"
 )
 
 var createdSubtask model.Subtask
 
-func TestRepoSubtaskCreateSuccess(t *testing.T) {
+func TestSubtaskCreateSuccess(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
-	subtask, err := repo.NewSubtaskRepo(db).Create(model.Subtask{
+	subtask, err := repo.NewSubtaskRepo(db).Store(model.Subtask{
 		TaskID: uint(rand.Intn(20) + 1),
 		Name:   "New Subtask",
 		IsDone: false,
 	})
 
-	require.Nil(t, err)
-	require.NotEmpty(t, subtask)
+	assert.Nil(t, err)
+	assert.NotEmpty(t, subtask)
 
 	createdSubtask = subtask
 }
 
-func TestRepoSubtaskCreateFailed(t *testing.T) {
+func TestSubtaskCreateFailed(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
-	subtask, err := repo.NewSubtaskRepo(db).Create(model.Subtask{})
+	subtask, err := repo.NewSubtaskRepo(db).Store(model.Subtask{})
 
-	require.NotNil(t, err)
-	require.Empty(t, subtask)
+	assert.NotNil(t, err)
+	assert.Empty(t, subtask)
 }
 
-func TestRepoSubtaskFindSuccess(t *testing.T) {
+func TestSubtaskFindSuccess(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
 	subtask, err := repo.NewSubtaskRepo(db).Find(uint(rand.Intn(20) + 1))
 
-	require.Nil(t, err)
-	require.NotEmpty(t, subtask)
+	assert.Nil(t, err)
+	assert.NotEmpty(t, subtask)
 }
 
-func TestRepoSubtaskFindFailed(t *testing.T) {
+func TestSubtaskFindFailed(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
 	subtask, err := repo.NewSubtaskRepo(db).Find(999)
 
-	require.NotNil(t, err)
-	require.Empty(t, subtask)
+	assert.NotNil(t, err)
+	assert.Empty(t, subtask)
 }
 
-func TestRepoSubtaskUpdate(t *testing.T) {
+func TestSubtaskUpdate(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
@@ -66,13 +66,13 @@ func TestRepoSubtaskUpdate(t *testing.T) {
 
 	subtask, err := repo.NewSubtaskRepo(db).Update(createdSubtask)
 
-	require.Nil(t, err)
-	require.NotEmpty(t, subtask)
+	assert.Nil(t, err)
+	assert.NotEmpty(t, subtask)
 
 	createdSubtask = subtask
 }
 
-func TestRepoSubtaskUpdateFailed(t *testing.T) {
+func TestSubtaskUpdateFailed(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
@@ -81,24 +81,24 @@ func TestRepoSubtaskUpdateFailed(t *testing.T) {
 
 	subtask, err := repo.NewSubtaskRepo(db).Update(model.Subtask{})
 
-	require.NotNil(t, err)
-	require.Empty(t, subtask)
+	assert.NotNil(t, err)
+	assert.Empty(t, subtask)
 }
 
-func TestRepoSubtaskDeleteSuccess(t *testing.T) {
+func TestSubtaskDeleteSuccess(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
 	err := repo.NewSubtaskRepo(db).Delete(createdSubtask)
 
-	require.Nil(t, err)
+	assert.Nil(t, err)
 }
 
-func TestRepoSubtaskDeleteFailed(t *testing.T) {
+func TestSubtaskDeleteFailed(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
 	err := repo.NewSubtaskRepo(db).Delete(model.Subtask{})
 
-	require.NotNil(t, err)
+	assert.NotNil(t, err)
 }

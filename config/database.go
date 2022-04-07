@@ -2,23 +2,20 @@ package config
 
 import (
 	"fmt"
-	"github.com/handirachmawan/tasks-api-clone/helper"
-	"github.com/handirachmawan/tasks-api-clone/model"
-	"os"
 
+	"github.com/handirachmawan/tasks-api-clone/model"
+	"github.com/spf13/viper"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
 func OpenDBConn() *gorm.DB {
-	helper.GetEnv()
+	user := viper.GetString("DB_USER")
+	password := viper.GetString("DB_PASSWORD")
+	hostname := viper.GetString("DB_HOSTNAME")
+	port := viper.GetString("DB_PORT")
 
-	user := os.Getenv("DB_USER")
-	password := os.Getenv("DB_PASSWORD")
-	hostname := os.Getenv("DB_HOSTNAME")
-	port := os.Getenv("DB_PORT")
-
-	database := os.Getenv("DB_DATABASE")
+	database := viper.GetString("DB_DATABASE")
 
 	dsn := fmt.Sprintf(
 		"host=%s user=%s password=%s port=%s dbname=%s sslmode=disable TimeZone=Asia/Shanghai",

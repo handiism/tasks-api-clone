@@ -1,28 +1,25 @@
-package test
+package repo_test
 
 import (
 	"fmt"
-	"github.com/handirachmawan/tasks-api-clone/helper"
-	"os"
 
+	"github.com/spf13/viper"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 )
 
 func openDBConn() *gorm.DB {
-	helper.GetEnv()
+	user := viper.GetString("DB_USER")
+	password := viper.GetString("DB_PASSWORD")
+	hostname := viper.GetString("DB_HOSTNAME")
+	port := viper.GetString("DB_PORT")
 
-	user := os.Getenv("DB_USER")
-	password := os.Getenv("DB_PASSWORD")
-	hostname := os.Getenv("DB_HOSTNAME")
-	port := os.Getenv("DB_PORT")
-
-	database := os.Getenv("DB_DATABASE")
+	database := viper.GetString("DB_DATABASE_TEST")
 
 	dsn := fmt.Sprintf(
 		"host=%s user=%s password=%s port=%s dbname=%s sslmode=disable TimeZone=Asia/Shanghai",
-		hostname, user, password, port, database+"_test",
+		hostname, user, password, port, database,
 	)
 
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{

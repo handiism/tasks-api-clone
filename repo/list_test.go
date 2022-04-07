@@ -1,67 +1,67 @@
-package test
+package repo_test
 
 import (
-	"github.com/handirachmawan/tasks-api-clone/model"
-	"github.com/handirachmawan/tasks-api-clone/repo"
 	"math/rand"
 	"testing"
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/stretchr/testify/require"
+	"github.com/handirachmawan/tasks-api-clone/model"
+	"github.com/handirachmawan/tasks-api-clone/repo"
+	"github.com/stretchr/testify/assert"
 )
 
 var list model.List
 
-func TestRepoListCreateSuccess(t *testing.T) {
+func TestListCreateSuccess(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
-	createdList, err := repo.NewListRepo(db).Create(model.List{
+	createdList, err := repo.NewListRepo(db).Store(model.List{
 		UserID: existingUUID,
 		Title:  "New List",
 	})
 
-	require.Nil(t, err)
-	require.NotEmpty(t, createdList)
+	assert.Nil(t, err)
+	assert.NotEmpty(t, createdList)
 
 	list = createdList
 }
 
-func TestRepoListCreateFailed(t *testing.T) {
+func TestListCreateFailed(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
-	list, err := repo.NewListRepo(db).Create(model.List{
+	list, err := repo.NewListRepo(db).Store(model.List{
 		UserID: uuid.New(),
 		Title:  "New Failed List",
 	})
 
-	require.NotNil(t, err)
-	require.Empty(t, list)
+	assert.NotNil(t, err)
+	assert.Empty(t, list)
 }
 
-func TestRepoListFindSuccess(t *testing.T) {
+func TestListFindSuccess(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
 	list, err := repo.NewListRepo(db).Find(uint(1 + rand.Intn(20)))
 
-	require.Nil(t, err)
-	require.NotEmpty(t, list)
+	assert.Nil(t, err)
+	assert.NotEmpty(t, list)
 }
 
-func TestRepoListFindFailed(t *testing.T) {
+func TestListFindFailed(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
 	list, err := repo.NewListRepo(db).Find(180)
 
-	require.NotNil(t, err)
-	require.Empty(t, list)
+	assert.NotNil(t, err)
+	assert.Empty(t, list)
 }
 
-func TestRepoListUpdateSuccess(t *testing.T) {
+func TestListUpdateSuccess(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
@@ -69,10 +69,10 @@ func TestRepoListUpdateSuccess(t *testing.T) {
 
 	list, err := repo.NewListRepo(db).Update(list)
 
-	require.Nil(t, err)
-	require.NotEmpty(t, list)
+	assert.Nil(t, err)
+	assert.NotEmpty(t, list)
 }
-func TestRepoListUpdateFailed(t *testing.T) {
+func TestListUpdateFailed(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
@@ -85,20 +85,20 @@ func TestRepoListUpdateFailed(t *testing.T) {
 		Tasks:     []model.Task{},
 	})
 
-	require.NotNil(t, err)
-	require.Empty(t, list)
+	assert.NotNil(t, err)
+	assert.Empty(t, list)
 }
 
-func TestRepoListDeleteSuccess(t *testing.T) {
+func TestListDeleteSuccess(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
 	err := repo.NewListRepo(db).Delete(list)
 
-	require.Nil(t, err)
+	assert.Nil(t, err)
 }
 
-func TestRepoListDeleteFailed(t *testing.T) {
+func TestListDeleteFailed(t *testing.T) {
 	db := openDBConn()
 	defer closeDBConn(db)
 
@@ -111,5 +111,5 @@ func TestRepoListDeleteFailed(t *testing.T) {
 		Tasks:     []model.Task{},
 	})
 
-	require.NotNil(t, err)
+	assert.NotNil(t, err)
 }
