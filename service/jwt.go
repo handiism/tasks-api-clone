@@ -3,7 +3,6 @@ package service
 import (
 	"errors"
 	"fmt"
-	"time"
 
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/google/uuid"
@@ -42,9 +41,6 @@ func (j *jwtService) Generate(id uuid.UUID) (string, error) {
 		UUID: id.String(),
 		RegisteredClaims: jwt.RegisteredClaims{
 			Issuer: j.issuer,
-			ExpiresAt: &jwt.NumericDate{
-				Time: time.Now().Add(24 * time.Hour),
-			},
 		},
 	}
 
@@ -80,10 +76,6 @@ func (j *jwtService) Validate(token string) (*jwt.Token, error) {
 
 		if ok := claims.VerifyIssuer(j.issuer, true); !ok {
 			return nil, errors.New("invaid jwt issuer")
-		}
-
-		if ok := claims.VerifyExpiresAt(time.Now(), true); !ok {
-			return nil, errors.New("token is expired")
 		}
 	} else if ok && !t.Valid {
 		return nil, errors.New("invalid token")

@@ -12,9 +12,10 @@ import (
 )
 
 type UserService interface {
-	Register(inp dtoreq.Register) (model.User, error)
+	Register(inp dtoreq.SaveUser) (model.User, error)
 	Login(inp dtoreq.Login) (model.User, error)
 	IsEmailAvailable(inp dtoreq.EmailChecking) bool
+	Update(id uuid.UUID, inp dtoreq.SaveUser) (model.User, error)
 	Fetch(id string) (model.User, error)
 	Delete(id string) error
 }
@@ -29,7 +30,7 @@ func NewUserService(userRepo repo.UserRepo) UserService {
 	}
 }
 
-func (u *userService) Register(inp dtoreq.Register) (model.User, error) {
+func (u *userService) Register(inp dtoreq.SaveUser) (model.User, error) {
 	avail := u.IsEmailAvailable(dtoreq.EmailChecking{Email: inp.Email})
 	if !avail {
 		return model.User{}, errors.New("cannot use registered email")
@@ -39,7 +40,7 @@ func (u *userService) Register(inp dtoreq.Register) (model.User, error) {
 	if err != nil {
 		return model.User{}, err
 	}
-	
+
 	now := time.Now()
 	user := model.User{
 		Name:      inp.Name,
@@ -67,7 +68,7 @@ func (u *userService) Login(inp dtoreq.Login) (model.User, error) {
 	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(inp.Password)); err != nil {
 		return model.User{}, err
 	} else {
-		
+
 		return user, nil
 	}
 }
@@ -77,6 +78,34 @@ func (u *userService) IsEmailAvailable(inp dtoreq.EmailChecking) bool {
 		return true
 	} else {
 		return false
+	}
+}
+
+func (u *userService) Update(id uuid.UUID, inp dtoreq.SaveUser) (model.User, error) {
+	user, err := u.userRepo.FindByUUID(id)
+
+	if err != nil {
+		return model.User{}, err
+	}
+
+	if _, err := u.userRepo.FindByEmail(inp.Email); err == nil {
+		return model.User{}, err
+	}
+
+	bytePass, err := bcrypt.GenerateFromPassword([]byte(inp.Password), bcrypt.DefaultCost)
+
+	if err != nil {
+		return model.User{}, err
+	}
+
+	user.Name = inp.Name
+	user.Email = inp.Email
+	user.Password = string(bytePass)
+
+	if user, err := u.userRepo.Update(user); err != nil {
+		return model.User{}, err
+	} else {
+		return user, nil
 	}
 }
 

@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"errors"
 	"net/http"
 	"strings"
 
@@ -16,7 +17,11 @@ func AuthorizeJWT(userRepo repo.UserRepo) gin.HandlerFunc {
 		authHeader := c.GetHeader("Authorization")
 
 		if !strings.Contains(authHeader, "Bearer") {
-			response := dtores.NewResponse("Unauthorized", http.StatusUnauthorized, "error", nil)
+			response := dtores.NewErrReponse(
+				http.StatusUnauthorized,
+				"Unauthorized",
+				errors.New("request header does'nt contain bearer token"),
+			)
 			c.AbortWithStatusJSON(http.StatusUnauthorized, response)
 			return
 		}
@@ -32,7 +37,7 @@ func AuthorizeJWT(userRepo repo.UserRepo) gin.HandlerFunc {
 		token, err := jwtService.Validate(tokenStr)
 
 		if err != nil {
-			response := dtores.NewResponse("Unauthorized", http.StatusUnauthorized, "error", nil)
+			response := dtores.NewErrReponse(http.StatusUnauthorized, "Unauthorized", err)
 			c.AbortWithStatusJSON(http.StatusUnauthorized, response)
 			return
 		}
@@ -40,7 +45,7 @@ func AuthorizeJWT(userRepo repo.UserRepo) gin.HandlerFunc {
 		claims, ok := token.Claims.(*service.UUIDClaims)
 
 		if !ok || !token.Valid {
-			response := dtores.NewResponse("Unauthorized", http.StatusUnauthorized, "error", nil)
+			response := dtores.NewErrReponse(http.StatusUnauthorized, "Unauthorized", err)
 			c.AbortWithStatusJSON(http.StatusUnauthorized, response)
 			return
 		}
@@ -48,14 +53,14 @@ func AuthorizeJWT(userRepo repo.UserRepo) gin.HandlerFunc {
 		uuid, err := uuid.Parse(claims.UUID)
 
 		if err != nil {
-			response := dtores.NewResponse("Unauthorized", http.StatusUnauthorized, "error", nil)
+			response := dtores.NewErrReponse(http.StatusUnauthorized, "Unauthorized", err)
 			c.AbortWithStatusJSON(http.StatusUnauthorized, response)
 			return
 		}
 
 		user, err := userRepo.FindByUUID(uuid)
 		if err != nil {
-			response := dtores.NewResponse("Unauthorized", http.StatusUnauthorized, "error", nil)
+			response := dtores.NewErrReponse(http.StatusUnauthorized, "Unauthorized", err)
 			c.AbortWithStatusJSON(http.StatusUnauthorized, response)
 			return
 		}

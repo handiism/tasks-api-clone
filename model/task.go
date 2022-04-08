@@ -7,14 +7,14 @@ import (
 
 type Task struct {
 	ID        uint           `json:"id"`
-	ListID    uint           `gorm:"not null" json:"list_id"`
-	Name      string         `gorm:"size:255;not null" json:"name"`
-	Detail    sql.NullString `gorm:"size:255" json:"detail"`
-	DueDate   sql.NullTime   `gorm:"default:null" json:"due_date"`
-	IsDone    bool           `gorm:"default:false;not null" json:"is_done"`
-	CreatedAt time.Time      `gorm:"autoCreateTime" json:"created_at"`
-	UpdatedAt time.Time      `gorm:"autoUpdateTime" json:"updated_at"`
-	Subtasks  []Subtask      `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL" json:"subtask,omitempty"`
+	ListID    uint           `json:"list_id"           gorm:"not null"`
+	Name      string         `json:"name"              gorm:"size:255;not null"`
+	Detail    sql.NullString `json:"detail"            gorm:"size:255"`
+	DueDate   sql.NullTime   `json:"due_date"          gorm:"default:null"`
+	IsDone    bool           `json:"is_done"           gorm:"default:false;not null"`
+	CreatedAt time.Time      `json:"created_at"        gorm:"autoCreateTime"`
+	UpdatedAt time.Time      `json:"updated_at"        gorm:"autoUpdateTime"`
+	Subtasks  []Subtask      `json:"subtask,omitempty" gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL"`
 }
 
 func (Task) TableName() string {
