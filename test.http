@@ -22,5 +22,23 @@ Accept: application/json
 ### Fetch
 GET http://localhost:8080/user/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiMWUxMzM3ZGEtNDY4Zi00OTAwLTg0MjItMWE3ZmYxOTU4OTFlIiwiaXNzIjoiSGFuZGkgUmFjaG1hd2FuIiwiZXhwIjoxNjQ5Mzk5NzUzfQ.4NijQdeQjyME8BWDUhvryS-KMz5yV_oCPLrgUPeh6Cw
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiYWNlMTMzNDMtZTM3Yi00YzhmLWIyNzctZjA2MWIxMWU4NmQ1IiwiaXNzIjoiSGFuZGkgUmFjaG1hd2FuIn0.eKuM_xSye-Zag9fV6FEJC0nSfRVvxI1mLnxLiBHwqdo
 Accept: application/json
+
+
+### Update
+PATCH http://localhost:8080/user/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiYWNlMTMzNDMtZTM3Yi00YzhmLWIyNzctZjA2MWIxMWU4NmQ1IiwiaXNzIjoiSGFuZGkgUmFjaG1hd2FuIn0.eKuM_xSye-Zag9fV6FEJC0nSfRVvxI1mLnxLiBHwqdo
+Accept: application/json
+
+{
+    "name":"nama baru",
+    "email":"email@baru.id",
+    "password": "p4sswordBARU"
+}
+
+### DELETE
+DELETE  http://localhost:8080/user/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiYWNlMTMzNDMtZTM3Yi00YzhmLWIyNzctZjA2MWIxMWU4NmQ1IiwiaXNzIjoiSGFuZGkgUmFjaG1hd2FuIn0.eKuM_xSye-Zag9fV6FEJC0nSfRVvxI1mLnxLiBHwqdo

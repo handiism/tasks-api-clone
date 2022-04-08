@@ -41,6 +41,8 @@ func main() {
 	userRoutes := r.Group("user", jwtHandler)
 	{
 		userRoutes.GET("/", userHandler.Fetch())
+		userRoutes.PATCH("/", userHandler.Update())
+		userRoutes.DELETE("/", userHandler.Delete())
 	}
 
 	r.Run(fmt.Sprintf("%s:%s",
