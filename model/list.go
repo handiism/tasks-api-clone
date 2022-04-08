@@ -8,11 +8,11 @@ import (
 
 type List struct {
 	ID        uint      `json:"id"`
-	UserID    uuid.UUID `gorm:"type:uuid;not null" json:"user_id"`
-	Title     string    `gorm:"size:255;not null" json:"title"`
-	CreatedAt time.Time `gorm:"autoCreateTime" json:"created_at"`
-	UpdatedAt time.Time `gorm:"autoUpdateTime" json:"updated_at"`
-	Tasks     []Task    `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL" json:"tasks,omitempty"`
+	UserID    uuid.UUID `json:"user_id"         gorm:"type:uuid;not null"`
+	Title     string    `json:"title"           gorm:"size:255;not null"`
+	CreatedAt time.Time `json:"created_at"      gorm:"autoCreateTime"`
+	UpdatedAt time.Time `json:"updated_at"      gorm:"autoUpdateTime"`
+	Tasks     []Task    `json:"tasks,omitempty" gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL"`
 }
 
 func (List) TableName() string {
