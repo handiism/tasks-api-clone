@@ -1,17 +1,46 @@
 package response
 
-type Response struct {
-	Message string      `json:"message"`
+import "github.com/go-playground/validator/v10"
+
+type response struct {
 	Code    int         `json:"code"`
 	Status  string      `json:"status"`
-	Data    interface{} `json:"data"`
+	Message string      `json:"message"`
+	Errors  []string    `json:"errors,omitempty"`
+	Data    interface{} `json:"data,omitempty"`
 }
 
-func NewResponse(message string, code int, status string, data interface{}) Response {
-	return Response{
-		Message: message,
+func NewErrReponse(code int, message string, err error) response {
+	errors := errors(err)
+	return response{
 		Code:    code,
-		Status:  status,
+		Status:  "error",
+		Message: message,
+		Errors:  errors,
+		Data:    nil,
+	}
+}
+
+func NewReponse(code int, message string, data interface{}) response {
+	return response{
+		Code:    code,
+		Status:  "success",
+		Message: message,
+		Errors:  nil,
 		Data:    data,
 	}
+}
+
+func errors(err error) []string {
+	var errors []string
+
+	if validationErrors, ok := err.(validator.ValidationErrors); ok {
+		for _, e := range validationErrors {
+			errors = append(errors, e.Error())
+		}
+		return errors
+	}
+
+	errors = append(errors, err.Error())
+	return errors
 }
