@@ -5,3 +5,7 @@ type SaveUser struct {
 	Email    string `binding:"required,email"          json:"email"`
 	Password string `binding:"required,alphanum,min=8" json:"password"`
 }
+
+type SaveList struct {
+	Title string `binding:"required,min=1" json:"title"`
+}
