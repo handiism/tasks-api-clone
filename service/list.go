@@ -42,12 +42,40 @@ func (l *listService) Add(id uuid.UUID, inp dtoreq.SaveList) (model.List, error)
 }
 
 func (l *listService) Update(userId uuid.UUID, listId uint, inp dtoreq.SaveList) (model.List, error) {
-	_, err := l.userRepo.FindByUUID(userId)
+	user, err := l.userRepo.FindByUUID(userId)
 	if err != nil {
 		return model.List{}, err
 	}
 
-	return model.List{}, nil
+	user, err = l.userRepo.Preload(user)
+	if err != nil {
+		return model.List{}, err
+	}
+
+	list, err := l.listRepo.Find(listId)
+	if err != nil {
+		return model.List{}, err
+	}
+
+	found := false
+	for _, v := range user.Lists {
+		if v.ID == list.ID {
+			found = true
+			break
+		}
+	}
+
+	if !found {
+		return model.List{}, err
+	}
+
+	list.Title = inp.Title
+	res, err := l.listRepo.Update(list)
+	if err != nil {
+		return model.List{}, err
+	}
+
+	return res, nil
 }
 
 func (l *listService) Fetch(userId uuid.UUID, listId uint) (model.List, error) {
@@ -85,7 +113,8 @@ func (l *listService) FetchAll(id uuid.UUID) ([]model.List, error) {
 	if err != nil {
 		return nil, err
 	}
-	return user.Lists, nil
+	userPreload, err := l.userRepo.Preload(user)
+	return userPreload.Lists, nil
 }
 
 func (l *listService) Delete(id uuid.UUID, listId uint) error {
@@ -112,7 +141,11 @@ func (l *listService) Delete(id uuid.UUID, listId uint) error {
 	}
 
 	if found {
-		return nil
+		if err := l.listRepo.Delete(list); err != nil {
+			return err
+		} else {
+			return nil
+		}
 	} else {
 		return errors.New("list not registered with the user")
 	}

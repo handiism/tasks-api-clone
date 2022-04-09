@@ -57,8 +57,11 @@ func main() {
 
 	listRoutes := r.Group("user/list", jwtMiddleware, listMiddleware)
 	{
+		listRoutes.GET("/", listHandler.GetAll())
 		listRoutes.POST("/", listHandler.Add())
 		listRoutes.GET("/:id", listHandler.Get())
+		listRoutes.PATCH("/:id", listHandler.Update())
+		listRoutes.DELETE("/:id", listHandler.Delete())
 	}
 
 	r.Run(fmt.Sprintf("%s:%s",
