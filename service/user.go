@@ -5,9 +5,9 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	dtoreq "github.com/handirachmawan/tasks-api-clone/dto/request"
-	"github.com/handirachmawan/tasks-api-clone/model"
-	"github.com/handirachmawan/tasks-api-clone/repo"
+	dtoreq "github.com/handiism/tasks-api-clone/dto/request"
+	"github.com/handiism/tasks-api-clone/model"
+	"github.com/handiism/tasks-api-clone/repo"
 	"golang.org/x/crypto/bcrypt"
 )
 

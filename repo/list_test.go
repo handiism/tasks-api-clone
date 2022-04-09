@@ -6,8 +6,8 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/handirachmawan/tasks-api-clone/model"
-	"github.com/handirachmawan/tasks-api-clone/repo"
+	"github.com/handiism/tasks-api-clone/model"
+	"github.com/handiism/tasks-api-clone/repo"
 	"github.com/stretchr/testify/assert"
 )
 

@@ -3,7 +3,7 @@ package config
 import (
 	"fmt"
 
-	"github.com/handirachmawan/tasks-api-clone/model"
+	"github.com/handiism/tasks-api-clone/model"
 	"github.com/spf13/viper"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"

@@ -7,9 +7,9 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
-	dtores "github.com/handirachmawan/tasks-api-clone/dto/response"
-	"github.com/handirachmawan/tasks-api-clone/repo"
-	"github.com/handirachmawan/tasks-api-clone/service"
+	dtores "github.com/handiism/tasks-api-clone/dto/response"
+	"github.com/handiism/tasks-api-clone/repo"
+	"github.com/handiism/tasks-api-clone/service"
 )
 
 func AuthorizeJWT(userRepo repo.UserRepo) gin.HandlerFunc {
