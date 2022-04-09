@@ -31,7 +31,7 @@ func (u *userHandler) Register() gin.HandlerFunc {
 		var input dtoreq.SaveUser
 		err := c.ShouldBindJSON(&input)
 		if err != nil {
-			response := dtores.NewErrReponse(
+			response := dtores.NewErrResponse(
 				http.StatusUnprocessableEntity,
 				"Unprocessable Entity",
 				err,
@@ -42,7 +42,7 @@ func (u *userHandler) Register() gin.HandlerFunc {
 
 		user, err := u.userService.Register(input)
 		if err != nil {
-			response := dtores.NewErrReponse(
+			response := dtores.NewErrResponse(
 				http.StatusBadRequest, "Bad Request", err,
 			)
 			c.JSON(http.StatusBadRequest, response)
@@ -50,12 +50,12 @@ func (u *userHandler) Register() gin.HandlerFunc {
 		}
 		user.Token, err = u.jwtService.Generate(user.ID)
 		if err != nil {
-			response := dtores.NewErrReponse(http.StatusBadRequest, "Bad Request", err)
+			response := dtores.NewErrResponse(http.StatusBadRequest, "Bad Request", err)
 			c.JSON(http.StatusBadRequest, response)
 			return
 		}
 
-		response := dtores.NewReponse(
+		response := dtores.NewResponse(
 			http.StatusCreated, "Created", user,
 		)
 		c.JSON(http.StatusCreated, response)
@@ -67,7 +67,7 @@ func (u *userHandler) Login() gin.HandlerFunc {
 		var inp dtoreq.Login
 		err := c.ShouldBindJSON(&inp)
 		if err != nil {
-			response := dtores.NewErrReponse(
+			response := dtores.NewErrResponse(
 				http.StatusUnprocessableEntity, "Unprocessable Entity", err,
 			)
 			c.JSON(http.StatusUnprocessableEntity, response)
@@ -76,7 +76,7 @@ func (u *userHandler) Login() gin.HandlerFunc {
 
 		user, err := u.userService.Login(inp)
 		if err != nil {
-			response := dtores.NewErrReponse(
+			response := dtores.NewErrResponse(
 				http.StatusUnauthorized, "Unauthorized", err,
 			)
 			c.JSON(http.StatusUnauthorized, response)
@@ -85,14 +85,14 @@ func (u *userHandler) Login() gin.HandlerFunc {
 
 		user.Token, err = u.jwtService.Generate(user.ID)
 		if err != nil {
-			response := dtores.NewErrReponse(
+			response := dtores.NewErrResponse(
 				http.StatusUnauthorized, "Unauthorized", err,
 			)
 			c.JSON(http.StatusUnauthorized, response)
 			return
 		}
 
-		response := dtores.NewReponse(
+		response := dtores.NewResponse(
 			http.StatusOK, "OK", user,
 		)
 		c.JSON(http.StatusOK, response)
@@ -103,7 +103,7 @@ func (u *userHandler) Fetch() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		user, exist := c.Get("user")
 		if !exist {
-			response := dtores.NewErrReponse(
+			response := dtores.NewErrResponse(
 				http.StatusNotFound,
 				"Not Found",
 				errors.New("user can't be processed"),
@@ -111,7 +111,7 @@ func (u *userHandler) Fetch() gin.HandlerFunc {
 			c.JSON(http.StatusNotFound, response)
 			return
 		}
-		response := dtores.NewReponse(
+		response := dtores.NewResponse(
 			http.StatusOK, "OK", user,
 		)
 		c.JSON(http.StatusOK, response)
@@ -122,7 +122,7 @@ func (u *userHandler) Update() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var inp dtoreq.SaveUser
 		if err := c.ShouldBind(&inp); err != nil {
-			response := dtores.NewReponse(
+			response := dtores.NewResponse(
 				http.StatusBadRequest, "Bad Request", err,
 			)
 			c.JSON(http.StatusBadRequest, response)
@@ -131,7 +131,7 @@ func (u *userHandler) Update() gin.HandlerFunc {
 
 		userMap, exist := c.Get("user")
 		if !exist {
-			response := dtores.NewErrReponse(
+			response := dtores.NewErrResponse(
 				http.StatusNotFound,
 				"Not Found",
 				errors.New("user not found"),
@@ -141,7 +141,7 @@ func (u *userHandler) Update() gin.HandlerFunc {
 		}
 		user, ok := userMap.(model.User)
 		if !ok {
-			response := dtores.NewReponse(
+			response := dtores.NewResponse(
 				http.StatusInternalServerError,
 				"Internal Server Error",
 				errors.New("failed to convert map[string]interface{} to model.User{}"),
@@ -151,12 +151,12 @@ func (u *userHandler) Update() gin.HandlerFunc {
 		}
 
 		if user, err := u.userService.Update(user.ID, inp); err != nil {
-			response := dtores.NewErrReponse(
+			response := dtores.NewErrResponse(
 				http.StatusUnprocessableEntity, "Unprocessable Entity", err,
 			)
 			c.JSON(http.StatusUnprocessableEntity, response)
 		} else {
-			response := dtores.NewReponse(http.StatusOK, "OK", user)
+			response := dtores.NewResponse(http.StatusOK, "OK", user)
 			c.JSON(http.StatusOK, response)
 		}
 	}
@@ -167,7 +167,7 @@ func (u *userHandler) Delete() gin.HandlerFunc {
 		var user model.User
 		userAny, exist := c.Get("user")
 		if !exist {
-			response := dtores.NewErrReponse(
+			response := dtores.NewErrResponse(
 				http.StatusNotFound,
 				"Not Found",
 				errors.New("key user not found in middleware context"),
@@ -178,7 +178,7 @@ func (u *userHandler) Delete() gin.HandlerFunc {
 
 		user, ok := userAny.(model.User)
 		if !ok {
-			response := dtores.NewErrReponse(
+			response := dtores.NewErrResponse(
 				http.StatusUnprocessableEntity, "Unprocessable Entity",
 				errors.New("cannot cast key user to model user"),
 			)
@@ -187,12 +187,12 @@ func (u *userHandler) Delete() gin.HandlerFunc {
 		}
 
 		if err := u.userService.Delete(user.ID.String()); err != nil {
-			response := dtores.NewErrReponse(
+			response := dtores.NewErrResponse(
 				http.StatusUnprocessableEntity, "Unprocessable Entity", err,
 			)
 			c.JSON(http.StatusUnprocessableEntity, response)
 		} else {
-			response := dtores.NewReponse(
+			response := dtores.NewResponse(
 				http.StatusOK, "OK", nil,
 			)
 			c.JSON(http.StatusOK, response)

@@ -10,7 +10,7 @@ type response struct {
 	Data    interface{} `json:"data,omitempty"`
 }
 
-func NewErrReponse(code int, message string, err error) response {
+func NewErrResponse(code int, message string, err error) response {
 	errors := errors(err)
 	return response{
 		Code:    code,
@@ -21,7 +21,7 @@ func NewErrReponse(code int, message string, err error) response {
 	}
 }
 
-func NewReponse(code int, message string, data interface{}) response {
+func NewResponse(code int, message string, data interface{}) response {
 	return response{
 		Code:    code,
 		Status:  "success",

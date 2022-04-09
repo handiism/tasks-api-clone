@@ -11,7 +11,7 @@ import (
 func AuthorizeUser() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		if _, exists := c.Get("user"); !exists {
-			response := dtores.NewErrReponse(
+			response := dtores.NewErrResponse(
 				http.StatusBadRequest,
 				"Bad Request",
 				errors.New("failed to fetch user after jwt middleware"),
