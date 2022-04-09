@@ -1,6 +1,8 @@
 package service
 
 import (
+	"errors"
+
 	"github.com/google/uuid"
 	dtoreq "github.com/handiism/tasks-api-clone/dto/request"
 	"github.com/handiism/tasks-api-clone/model"
@@ -9,17 +11,20 @@ import (
 
 type ListService interface {
 	Add(id uuid.UUID, inp dtoreq.SaveList) (model.List, error)
-	Update(id uuid.UUID, inp dtoreq.SaveUser) (model.List, error)
+	Update(userId uuid.UUID, listId uint, inp dtoreq.SaveList) (model.List, error)
+	Fetch(userId uuid.UUID, listId uint) (model.List, error)
 	FetchAll(id uuid.UUID) ([]model.List, error)
 	Delete(id uuid.UUID) error
 }
 
 type listService struct {
+	userRepo repo.UserRepo
 	listRepo repo.ListRepo
 }
 
-func NewListService(listRepo repo.ListRepo) ListService {
+func NewListService(userRepo repo.UserRepo, listRepo repo.ListRepo) ListService {
 	return &listService{
+		userRepo: userRepo,
 		listRepo: listRepo,
 	}
 }
@@ -36,8 +41,43 @@ func (l *listService) Add(id uuid.UUID, inp dtoreq.SaveList) (model.List, error)
 	}
 }
 
-func (l *listService) Update(id uuid.UUID, inp dtoreq.SaveUser) (model.List, error) {
-	panic("not implemented") // TODO: Implement
+func (l *listService) Update(userId uuid.UUID, listId uint, inp dtoreq.SaveList) (model.List, error) {
+	_, err := l.userRepo.FindByUUID(userId)
+	if err != nil {
+		return model.List{}, err
+	}
+
+	return model.List{}, nil
+}
+
+func (l *listService) Fetch(userId uuid.UUID, listId uint) (model.List, error) {
+	list, err := l.listRepo.Find(listId)
+	if err != nil {
+		return model.List{}, err
+	}
+
+	user, err := l.userRepo.FindByUUID(userId)
+	if err != nil {
+		return model.List{}, err
+	}
+
+	user, err = l.userRepo.PreloadAll(user)
+	if err != nil {
+		return model.List{}, err
+	}
+	
+	valid := false
+	for _, li := range user.Lists {
+		if li.ID == list.ID {
+			valid = true
+			break
+		}
+	}
+	if valid {
+		return list, nil
+	} else {
+		return model.List{}, errors.New("list not found")
+	}
 }
 
 func (l *listService) FetchAll(id uuid.UUID) ([]model.List, error) {
