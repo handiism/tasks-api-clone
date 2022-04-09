@@ -14,7 +14,7 @@ type ListService interface {
 	Update(userId uuid.UUID, listId uint, inp dtoreq.SaveList) (model.List, error)
 	Fetch(userId uuid.UUID, listId uint) (model.List, error)
 	FetchAll(id uuid.UUID) ([]model.List, error)
-	Delete(id uuid.UUID) error
+	Delete(id uuid.UUID, listId uint) error
 }
 
 type listService struct {
@@ -65,7 +65,7 @@ func (l *listService) Fetch(userId uuid.UUID, listId uint) (model.List, error) {
 	if err != nil {
 		return model.List{}, err
 	}
-	
+
 	valid := false
 	for _, li := range user.Lists {
 		if li.ID == list.ID {
@@ -81,9 +81,39 @@ func (l *listService) Fetch(userId uuid.UUID, listId uint) (model.List, error) {
 }
 
 func (l *listService) FetchAll(id uuid.UUID) ([]model.List, error) {
-	panic("not implemented") // TODO: Implement
+	user, err := l.userRepo.FindByUUID(id)
+	if err != nil {
+		return nil, err
+	}
+	return user.Lists, nil
 }
 
-func (l *listService) Delete(id uuid.UUID) error {
-	panic("not implemented") // TODO: Implement
+func (l *listService) Delete(id uuid.UUID, listId uint) error {
+	user, err := l.userRepo.FindByUUID(id)
+	if err != nil {
+		return err
+	}
+
+	user, err = l.userRepo.Preload(user)
+	if err != nil {
+		return err
+	}
+
+	list, err := l.listRepo.Find(listId)
+	if err != nil {
+		return err
+	}
+
+	found := false
+	for _, v := range user.Lists {
+		if v.ID == list.ID {
+			found = true
+		}
+	}
+
+	if found {
+		return nil
+	} else {
+		return errors.New("list not registered with the user")
+	}
 }
