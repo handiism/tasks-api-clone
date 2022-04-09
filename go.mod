@@ -1,4 +1,4 @@
-module github.com/handirachmawan/tasks-api-clone
+module github.com/handiism/tasks-api-clone
 
 go 1.17
 

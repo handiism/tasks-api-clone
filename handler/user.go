@@ -5,10 +5,10 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	dtoreq "github.com/handirachmawan/tasks-api-clone/dto/request"
-	dtores "github.com/handirachmawan/tasks-api-clone/dto/response"
-	"github.com/handirachmawan/tasks-api-clone/model"
-	"github.com/handirachmawan/tasks-api-clone/service"
+	dtoreq "github.com/handiism/tasks-api-clone/dto/request"
+	dtores "github.com/handiism/tasks-api-clone/dto/response"
+	"github.com/handiism/tasks-api-clone/model"
+	"github.com/handiism/tasks-api-clone/service"
 )
 
 type userHandler struct {

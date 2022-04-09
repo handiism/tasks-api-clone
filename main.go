@@ -4,11 +4,11 @@ import (
 	"fmt"
 
 	"github.com/gin-gonic/gin"
-	"github.com/handirachmawan/tasks-api-clone/config"
-	"github.com/handirachmawan/tasks-api-clone/handler"
-	"github.com/handirachmawan/tasks-api-clone/middleware"
-	"github.com/handirachmawan/tasks-api-clone/repo"
-	"github.com/handirachmawan/tasks-api-clone/service"
+	"github.com/handiism/tasks-api-clone/config"
+	"github.com/handiism/tasks-api-clone/handler"
+	"github.com/handiism/tasks-api-clone/middleware"
+	"github.com/handiism/tasks-api-clone/repo"
+	"github.com/handiism/tasks-api-clone/service"
 	"github.com/spf13/viper"
 )
 
