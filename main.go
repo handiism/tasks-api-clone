@@ -18,19 +18,29 @@ func init() {
 	if err := viper.ReadInConfig(); err != nil {
 		panic(err)
 	}
+
 }
 
 func main() {
 	db := config.OpenDBConn()
 	defer config.CloseDBConn(db)
-
 	userRepo := repo.NewUserRepo(db)
-	jwtHandler := middleware.AuthorizeJWT(userRepo)
+	listRepo := repo.NewListRepo(db)
+
+	jwtMiddleware := middleware.AuthorizeJWT(userRepo)
+	listMiddleware := middleware.AuthorizeUser()
+
 	userService := service.NewUserService(userRepo)
+	listService := service.NewListService(userRepo, listRepo)
 	jwtService := service.NewJWTService()
+
 	userHandler := handler.NewUserHandler(
 		userService,
 		jwtService,
+	)
+	listHandler := handler.NewListHandler(
+		listService,
+		userService,
 	)
 
 	r := gin.Default()
@@ -38,11 +48,17 @@ func main() {
 	r.POST("register", userHandler.Register())
 	r.POST("login", userHandler.Login())
 
-	userRoutes := r.Group("user", jwtHandler)
+	userRoutes := r.Group("user", jwtMiddleware)
 	{
 		userRoutes.GET("/", userHandler.Fetch())
 		userRoutes.PATCH("/", userHandler.Update())
 		userRoutes.DELETE("/", userHandler.Delete())
+	}
+
+	listRoutes := r.Group("user/list", jwtMiddleware, listMiddleware)
+	{
+		listRoutes.POST("/", listHandler.Add())
+		listRoutes.GET("/:id", listHandler.Get())
 	}
 
 	r.Run(fmt.Sprintf("%s:%s",
