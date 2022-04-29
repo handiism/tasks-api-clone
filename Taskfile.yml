@@ -15,16 +15,13 @@ tasks:
       - PGPASSWORD=$DB_PASSWORD createdb -U $DB_USER $DB_DATABASE
       - PGPASSWORD=$DB_PASSWORD createdb -U $DB_USER $DB_DATABASE_TEST
 
-  fill:
+  migrate:
     ignore_error: true
     cmds:
-      - PGPASSWORD=$DB_PASSWORD psql -o temp -q -U $DB_USER $DB_DATABASE_TEST < db_test.sql
+      - PGPASSWORD=$DB_PASSWORD psql -o /dev/null -q -U $DB_USER $DB_DATABASE < schema.sql
+      - PGPASSWORD=$DB_PASSWORD psql -o /dev/null -q -U $DB_USER $DB_DATABASE_TEST < schema.sql
 
-  repo:
+  run:
     ignore_error: true
-    dir: repo
     cmds:
-      - go test -v -run User
-      - go test -v -run List
-      - go test -v -run Task
-      - go test -v -run Subtask
+      - go run main.go
