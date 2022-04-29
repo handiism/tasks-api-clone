@@ -114,6 +114,9 @@ func (l *listService) FetchAll(id uuid.UUID) ([]model.List, error) {
 		return nil, err
 	}
 	userPreload, err := l.userRepo.Preload(user)
+	if err != nil {
+		return nil, nil
+	}
 	return userPreload.Lists, nil
 }
 
