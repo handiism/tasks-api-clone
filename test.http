@@ -1,0 +1,78 @@
+### Register
+POST http://localhost:8080/register
+Content-Type: application/json
+Accept: application/json
+
+{
+    "name":"Muhammad Handi Rachmawan",
+    "email":"mail@handiism.id",
+    "password": "p4ssword"
+}
+
+### Login
+POST http://localhost:8080/login
+Content-Type: application/json
+Accept: application/json
+
+{
+    "email":"mail@handiism.id",
+    "password": "p4ssword"
+}
+
+### Fetch
+GET http://localhost:8080/user/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiZjg1NDc3YjctMjEyNC00YTczLTk3NGEtYTI4OTFlYjAwNWVhIiwiaXNzIjoiSGFuZGkgUmFjaG1hd2FuIn0.hFjOtuY47HKckF7i7CLsP02rqKx792ErWpXTBUn__E0
+Accept: application/json
+
+
+### Update
+PATCH http://localhost:8080/user/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiZjg1NDc3YjctMjEyNC00YTczLTk3NGEtYTI4OTFlYjAwNWVhIiwiaXNzIjoiSGFuZGkgUmFjaG1hd2FuIn0.hFjOtuY47HKckF7i7CLsP02rqKx792ErWpXTBUn__E0
+Accept: application/json
+
+{
+    "name":"nama baru",
+    "email":"email@baru.id",
+    "password": "p4sswordBARU"
+}
+
+### DELETE
+DELETE  http://localhost:8080/user/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiZjg1NDc3YjctMjEyNC00YTczLTk3NGEtYTI4OTFlYjAwNWVhIiwiaXNzIjoiSGFuZGkgUmFjaG1hd2FuIn0.hFjOtuY47HKckF7i7CLsP02rqKx792ErWpXTBUn__E0
+
+
+### Add List
+POST http://localhost:8080/user/list
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiZjg1NDc3YjctMjEyNC00YTczLTk3NGEtYTI4OTFlYjAwNWVhIiwiaXNzIjoiSGFuZGkgUmFjaG1hd2FuIn0.hFjOtuY47HKckF7i7CLsP02rqKx792ErWpXTBUn__E0
+
+{
+    "title" : "Anjay"
+}
+
+### Get List
+GET http://localhost:8080/user/list/21
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiZjg1NDc3YjctMjEyNC00YTczLTk3NGEtYTI4OTFlYjAwNWVhIiwiaXNzIjoiSGFuZGkgUmFjaG1hd2FuIn0.hFjOtuY47HKckF7i7CLsP02rqKx792ErWpXTBUn__E0
+
+### Update List
+PATCH http://localhost:8080/user/list/21
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiZjg1NDc3YjctMjEyNC00YTczLTk3NGEtYTI4OTFlYjAwNWVhIiwiaXNzIjoiSGFuZGkgUmFjaG1hd2FuIn0.hFjOtuY47HKckF7i7CLsP02rqKx792ErWpXTBUn__E0
+
+{
+    "title" : "Updataaa  sas  e asasas nomor dua"
+}
+
+### Get All List
+GET http://localhost:8080/user/list/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiZjg1NDc3YjctMjEyNC00YTczLTk3NGEtYTI4OTFlYjAwNWVhIiwiaXNzIjoiSGFuZGkgUmFjaG1hd2FuIn0.hFjOtuY47HKckF7i7CLsP02rqKx792ErWpXTBUn__E0
+
+### Delete List
+DELETE  http://localhost:8080/user/list/21
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiZjg1NDc3YjctMjEyNC00YTczLTk3NGEtYTI4OTFlYjAwNWVhIiwiaXNzIjoiSGFuZGkgUmFjaG1hd2FuIn0.hFjOtuY47HKckF7i7CLsP02rqKx792ErWpXTBUn__E0
